@@ -4,6 +4,9 @@
 			"path": "microservicio",
 		},
     {
+			"path": "web",
+		},
+    {
 			"path": ".",
 		},
 	],
@@ -11,6 +14,12 @@
 		"editor.tabSize": 2,
 		"editor.detectIndentation": false,
     "editor.bracketPairColorization.enabled": true,
+    "editor.minimap.scale": 1,
+    "editor.minimap.enabled": true,
+    "editor.codeLens": false,
+    "search.searchOnType": false,
+    "breadcrumbs.enabled": false,
+    "terminal.integrated.gpuAcceleration": "on",
 		"files.autoSave": "onFocusChange",
 		"eslint.validate": [
 			"javascript",
@@ -19,27 +28,31 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode",
       "editor.formatOnSave": true,
     },
-    "javascript.suggest.paths": false,
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true,
+    },
+    "javascript.suggest.paths": true,
 		"javascript.updateImportsOnFileMove.enabled": "always",
 		"prettier.singleQuote": true,
 		"prettier.trailingComma": "all",
     "files.exclude": {
-      "**/node_modules": true,
+      "**/node_modules": false,
       "**/package-lock.json": true,
       "**/jsconfig.json": false,
     },
-    "terminal.integrated.gpuAcceleration": "on",
     "emmet.includeLanguages": {
+      "html": "html5",
       "jsx": "javascriptreact",
-      "js": "javascript"
+      "js": "javascriptreact"
     },
+    "emmet.showSuggestionsAsSnippets": true,
 	},
 	"extensions": {
     "recommendations": [
       "dbaeumer.vscode-eslint",
       "usernamehw.errorlens",
       "esbenp.prettier-vscode",
-      "burkeholland.simple-react-snippets",
       "christian-kohler.path-intellisense",
       "chris-noring.node-snippets"
     ]
