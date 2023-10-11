@@ -1,6 +1,6 @@
 'use client';
 
-import { redirect, usePathname } from 'next/navigation';
+import { redirect, usePathname, useRouter } from 'next/navigation';
 
 const users = [
   { id: 1, user: 'admin', pass: '123', point: '/dashboard' },
@@ -21,13 +21,11 @@ const checkAuth = (user, pass) => {
 
 const getLS = (key) => JSON.parse(localStorage.getItem(key));
 const inLS = (key) => localStorage.hasOwnProperty(key);
-const delLS = () => localStorage.clear();
+const clearLS = () => localStorage.clear();
 const delFromLS = (key) => localStorage.removeItem(key);
 
 const saveIdLS = (key, val) => {
-  if (inLS(key)) {
-    delFromLS(key);
-  }
+  if (inLS(key)) delFromLS(key);
   localStorage.setItem(key, JSON.stringify(val));
 };
 
@@ -41,4 +39,4 @@ const useAuth = () => {
     redirect(point);
   }
 };
-export { checkAuth, useAuth, getLS, inLS, delLS };
+export { checkAuth, useAuth, getLS, inLS, clearLS };

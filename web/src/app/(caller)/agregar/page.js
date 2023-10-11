@@ -1,13 +1,16 @@
 'use client';
 
 import IncidentForm from '@components/incidentForm';
-import { delLS } from '@libs/userAuth';
+import { clearLS } from '@libs/userAuth';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+  const router = useRouter();
   async function handleSubmit(event) {
     event.preventDefault();
     alert('Incidencia Registrada');
-    delLS();
+    clearLS();
+    router.push('/');
   }
 
   return (

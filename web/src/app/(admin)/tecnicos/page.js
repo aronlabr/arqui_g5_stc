@@ -1,3 +1,7 @@
 export default function Page() {
-  return <div>Tecnicos</div>;
+  return (
+    <div>
+      <h1>Tecnicos</h1>
+    </div>
+  );
 }
