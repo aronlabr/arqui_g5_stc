@@ -1,6 +1,6 @@
 'use client';
 
-import IncidentForm from '@components/incidentForm';
+import IncidentForm from '@components/ui/incidentForm';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
@@ -15,7 +15,7 @@ const details = {
   pass3: 'a',
   isHidden: true,
   tecnId: 12,
-  fecha: '12/12/12',
+  fecha: '2020-12-12',
 };
 
 export default function Page() {
@@ -26,10 +26,6 @@ export default function Page() {
 
   return (
     <>
-      <Button className="mt-3 " onClick={() => setisEditable(!isEditable)}>
-        {!isEditable ? 'Editar' : 'Cancelar'}
-      </Button>
-
       <IncidentForm
         title={'Detalles de Incidencia de Usuario'}
         isVisible={true}
@@ -38,6 +34,10 @@ export default function Page() {
         btnName={'Guardar Datos'}
         editable={isEditable}
       />
+
+      <Button className="mt-3 " onClick={() => setisEditable(!isEditable)}>
+        {!isEditable ? 'Editar' : 'Cancelar'}
+      </Button>
     </>
   );
 }

@@ -12,23 +12,23 @@ const details = {
   pass3: 'a',
   isHidden: true,
   tecnId: 12,
-  fecha: '12/12/12',
+  fecha: '2012-12-12',
 };
-
+//
 export default function IncidentForm({
-  title,
-  handleSubmit,
-  details = undefined,
+  title = null,
+  handleSubmit = null,
+  details = null,
   isVisible = false,
   btnName,
   editable = true,
 }) {
   return (
-    <Card className="w-50 py-5 position-absolute top-50 start-50 translate-middle">
+    <Card className="w-50 py-5 position-absolute top-50 start-50 translate-middle ">
       <Form onSubmit={handleSubmit} className="w-75 mx-auto">
         <fieldset disabled={!editable}>
           <Stack gap={3}>
-            <h1 className="text-center">{title}</h1>
+            {title && <h1 className="text-center">{title}</h1>}
             <Input
               label={'ID Cliente'}
               name={'client'}

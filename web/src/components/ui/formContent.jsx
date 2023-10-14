@@ -8,7 +8,7 @@ export function Input({ name, type, phold, label, value }) {
         type={type}
         placeholder={phold}
         name={name}
-        value={value}
+        defaultValue={value}
         required
       />
     </InputGroup>

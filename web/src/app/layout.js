@@ -1,4 +1,4 @@
-import '@styles/_reset.css';
+// import '@styles/_reset.css';
 import '@styles/globals.css';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';

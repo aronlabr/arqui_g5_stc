@@ -1,6 +1,6 @@
 'use client';
 
-import IncidentForm from '@components/incidentForm';
+import IncidentForm from '@components/ui/incidentForm';
 import { clearLS } from '@libs/userAuth';
 import { useRouter } from 'next/navigation';
 

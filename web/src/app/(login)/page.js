@@ -1,6 +1,6 @@
 'use client';
 
-import { Input } from '@components/formContent';
+import { Input } from '@components/ui/formContent';
 import { checkAuth } from '@libs/userAuth';
 import { useRouter } from 'next/navigation';
 import { Button, Card, Form, InputGroup, Stack } from 'react-bootstrap';
