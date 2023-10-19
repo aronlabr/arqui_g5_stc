@@ -1,0 +1,127 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "visita",
+    "dateExported": "2023-10-19T17:15:38.496Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "8051cfb8-0a94-46e0-a351-a23f3be860a0",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "",
+            "name": "All Visitas",
+            "url": "http://localhost:3000",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-18T23:55:37.986Z",
+            "modified": "2023-10-18T23:56:28.898Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "38a408e3-4714-434c-9f43-3361e0634285",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "",
+            "name": "Una Visita",
+            "url": "http://localhost:3000/4",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-10-18T23:57:37.735Z",
+            "modified": "2023-10-18T23:57:56.187Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "fa016c2c-2cfe-49fe-aaf3-2b7e88f49e45",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "",
+            "name": "Visitas de Cuadrilla",
+            "url": "http://localhost:3000/cuadrilla/2",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-10-19T00:24:14.122Z",
+            "modified": "2023-10-19T00:24:28.372Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8a899426-08a9-4459-bc9f-3ed9f9570bee",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "",
+            "name": "Nueva Visita",
+            "url": "http://localhost:3000/new",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-10-19T00:25:50.820Z",
+            "modified": "2023-10-19T00:56:41.739Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"incidencia\": 62,\n  \"fecha\": \"2023-11-18 05:00:33\",\n  \"cuadrilla\": 3\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1ae90377-0bc4-4210-a677-30bf0d298ee7",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "",
+            "name": "No visitado o atendido",
+            "url": "http://localhost:3000/81",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2023-10-19T01:01:45.224Z",
+            "modified": "2023-10-19T17:10:22.414Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"estado\":\"nv\",\n  \"motivo\":\"Nulla facilisi. Cras non velit nec nisi vulputate nonummy.\",\n  \"imagen\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8\",\n  \"lat\":44.000,\n  \"lon\":-88.000\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "4f666f0d-781d-47e8-9188-32deb72e4245",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "",
+            "name": "Visita por Atender",
+            "url": "",
+            "method": "PUT",
+            "sortNum": 65000,
+            "created": "2023-10-19T17:07:40.278Z",
+            "modified": "2023-10-19T17:07:54.416Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"estado\": \"va\",\n  \"lat\": 44.000,\n  \"lon\": -88.000\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "917a3b20-ed3d-478b-96fe-cab972570aff",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "",
+            "name": "Registrar Atencion realizada",
+            "url": "http://localhost:3000/81",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-10-19T17:01:10.811Z",
+            "modified": "2023-10-19T17:03:22.061Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\":\"Obe Grewe\",\n  \"dni\":45424027,\n  \"descrip\":\"Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.\",\n  \"imgAnt\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRv\",\n  \"imgDes\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRv\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

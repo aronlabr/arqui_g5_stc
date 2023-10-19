@@ -1,0 +1,3 @@
+const cantidadTecnicos = {
+  cantidad: 'int',
+};
