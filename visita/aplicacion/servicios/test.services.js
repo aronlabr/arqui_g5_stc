@@ -1,6 +1,5 @@
-import { pool, query } from '../../infraestructura/conexion/db.js';
+import { query } from '../../infraestructura/conexion/db.js';
 import consultas from '../../infraestructura/consultas/queries.js';
-
 // Admin
 
 const getAllVisitas = async () => {

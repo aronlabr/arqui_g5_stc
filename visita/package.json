@@ -2,21 +2,23 @@
   "name": "microservicio-visita",
   "version": "1.0.0",
   "description": "",
-  "main": "./aplicacion/index.js",
+  "main": "aplicacion/index.js",
   "type": "module",
   "scripts": {
-    "serve": "node main",
+    "start": "node aplicacion",
     "dev": "nodemon main"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mysql2": "^3.6.1"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.3",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1"
   }

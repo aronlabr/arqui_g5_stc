@@ -1,5 +1,8 @@
 {
 	"folders": [
+    {
+			"path": ".",
+		},
 		{
 			"path": "microservicio",
 		},
@@ -10,7 +13,7 @@
 			"path": "visita",
 		},
     {
-			"path": ".",
+			"path": "notificacion",
 		},
 	],
 	"settings": {
@@ -57,7 +60,8 @@
       "usernamehw.errorlens",
       "esbenp.prettier-vscode",
       "christian-kohler.path-intellisense",
-      "chris-noring.node-snippets"
+      "chris-noring.node-snippets",
+      "ms-azuretools.vscode-docker"
     ]
   },
 	"launch": {

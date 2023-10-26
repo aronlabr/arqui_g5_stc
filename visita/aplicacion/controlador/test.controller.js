@@ -1,4 +1,16 @@
 import testServices from '../servicios/test.services.js';
+import { VISITA_BINDING_KEY, NOTIF_BINDING_KEY } from '../config.js';
+import {
+  createChannel,
+  publishMessage,
+} from '../../infraestructura/adaptador/broker.js';
+
+let channel;
+try {
+  channel = await createChannel();
+} catch (error) {
+  console.error('Error setting up message broker:' + error.message);
+}
 
 // Custom error handler
 const errorWrapper = (err, req, res, next) => {
@@ -19,7 +31,7 @@ const getAllVisitas = async (req, res) => {
     res.json(result);
   } catch (error) {
     console.error(error);
-    res.json(error);
+    res.status(500).json(error.message);
   }
 };
 
@@ -27,10 +39,17 @@ const getVisitaById = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await testServices.getVisitaById(id);
+    const message = { event: 'CHECK_VISITA', data: { ...result } };
+    await publishMessage({
+      channel,
+      binding_key: NOTIF_BINDING_KEY,
+      message: JSON.stringify(message),
+    });
+
     res.json(result);
   } catch (error) {
     console.error(error);
-    res.json(error);
+    res.status(500).json(error.message);
   }
 };
 
@@ -58,7 +77,7 @@ const getAllVisitasByCuadrilla = async (req, res) => {
     res.json(result);
   } catch (error) {
     console.error(error);
-    res.json(error);
+    res.status(500).json(error.message);
   }
 };
 
@@ -80,6 +99,9 @@ const updateVisita = async (req, res) => {
         ...{ id, estado, lat, lon },
       });
     } else throw new Error("Incorrect state. Expected 'nv' or 'vna' or 'va'");
+
+    publishMessage(channel, VISITA_BINDING_KEY, result);
+
     res.status(200).json(result);
   } catch (error) {
     console.error(error);
@@ -109,11 +131,10 @@ const registerAtencion = async (req, res, next) => {
 // prueba
 const getConnection = async (req, res, next) => {
   try {
-    const result = await testServices.createAtencionTr({}, {});
-    res.json(result);
+    res.json('Hello World');
   } catch (error) {
     console.error(error);
-    res.json(error);
+    res.status(500).json(error);
   }
 };
 
