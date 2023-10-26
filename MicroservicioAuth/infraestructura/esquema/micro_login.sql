@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-10-2023 a las 22:45:52
+-- Tiempo de generación: 26-10-2023 a las 01:50:07
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.0.13
 
@@ -24,46 +24,42 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `users`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `user` varchar(50) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `pass` varchar(255) NOT NULL
+CREATE TABLE `usuarios` (
+  `id_usuario` int(11) NOT NULL,
+  `user` varchar(100) NOT NULL,
+  `pass` varchar(100) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `ape_pat` varchar(100) NOT NULL,
+  `ape_mat` varchar(100) NOT NULL,
+  `dni` varchar(100) NOT NULL,
+  `telefono` varchar(100) NOT NULL,
+  `direccion` varchar(100) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `foto` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `users`
---
-
-INSERT INTO `users` (`id`, `user`, `name`, `pass`) VALUES
-(1, 'aldairam', 'Aldair Asencio', '$2a$08$V5NL6Ujj0WnoAjQxNVDgF.jCRV/zUdAMx4l/.TgtZ3Rc5Mqrm3kI2'),
-(2, 'admin', 'Administrador', '$2a$08$1tMBq26AcdoU0WfqQLKCTeJSo5.300hK1iLLrzcnBDoXjHMPrSbam'),
-(3, 'usuarioam', 'Usuario', '$2a$08$QwYTff48EamLvTajK2XFyukxGQrqv8zou4CLvHOKr4oRVXUuz767a'),
-(4, 'aldair', 'Aldair Asencio Medina', '$2a$08$q9NwW7OW/Zb8B.dS02dNh.eYKjVsVdyF8uUeGgnTt3nhOKkgIX0su'),
-(5, 'enrique', 'Enrique Medina', '$2a$08$kGw7djYWrWTm/bpzAp1R0uVodVgYYOVLYsCDbg7ZHfEECFLnjUJ/e');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `users`
+-- Indices de la tabla `usuarios`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id_usuario`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `users`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `usuarios`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

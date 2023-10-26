@@ -1,16 +1,18 @@
 const jwt = require('jsonwebtoken')
 const bcryptjs = require('bcryptjs')
 const conexion = require('../../infraestructura/conexion/db')
+const servicios = require('../servicios/authservicios')
 const {promisify} = require('util')
+const queries = require('../../infraestructura/consultas/queries')
 
 //procedimiento para registrarnos
 exports.register = async(req, res)=>{
 
     try {
-        const {user, name, pass} = req.body
+        const {user, pass, nombre, ape_pat, ape_mat, dni, telefono, direccion, correo} = req.body
         let passHash = await bcryptjs.hash(pass, 8)
         //console.log(passHash)
-        conexion.query('INSERT INTO users SET ?', {user: user, name: name, pass: passHash}, (error, results)=>{
+        conexion.query('INSERT INTO usuarios SET ?', {user: user, nombre: nombre, pass: passHash, ape_pat: ape_pat, ape_mat: ape_mat, dni: dni, telefono: telefono, direccion: direccion, correo:correo}, (error, results)=>{
             if(error){console.log(error)}
             res.redirect('/')
             console.log("Usuario: "+ user +" registrado correctamente.")
@@ -23,12 +25,13 @@ exports.register = async(req, res)=>{
 
 //procedimiento oara login
 exports.login = async(req, res)=>{
-    try {
-        const {user, pass} = req.body   
-            conexion.query('SELECT * FROM users WHERE user = ?', [user], async (error, results)=>{
+        try {
+        const {user, pass} = req.body  
+        //const result = await servicios.getUserbyUser(user) 
+            conexion.query(queries.getUserbyUserQ,[user],async (error, results)=>{
                     //inicio de sesion correcto
-                    const id = results[0].id
-                    const token = jwt.sign({id:id}, "grupoCinco")
+                    const id = results[0].id_usuario
+                    const token = jwt.sign({id_usuario:id}, "grupoCinco")
                     console.log("TOKEN: "+token+" para el usuario: "+user)
 
                     const cookiesOptions = {
@@ -47,7 +50,7 @@ exports.isAuthenticated = async (req, res, next)=>{
     if(req.cookies.jwt){
         try {
             const decodificada = await promisify(jwt.verify)(req.cookies.jwt, "grupoCinco")
-            conexion.query('SELECT * FROM users WHERE id = ?', [decodificada.id], (error, results)=>{
+            conexion.query('SELECT * FROM usuarios WHERE id_usuario = ?', [decodificada.id_usuario], (error, results)=>{
                 if(!results){return next()}
                 req.user = results[0]
                 return next()
