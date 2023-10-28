@@ -1,0 +1,61 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "notificaciones",
+    "dateExported": "2023-10-28T17:37:55.164Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "618856fb-dbf6-46d0-9a46-eada4829dc44",
+            "colId": "780a5cb7-ae9b-462c-ad09-b64e326b955e",
+            "containerId": "",
+            "name": "All Notif",
+            "url": "http://{{host}}/notif/all",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-27T23:40:56.107Z",
+            "modified": "2023-10-28T16:54:28.238Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c86d7571-688b-4c0e-883e-23697df8a737",
+            "colId": "780a5cb7-ae9b-462c-ad09-b64e326b955e",
+            "containerId": "",
+            "name": "New Notif",
+            "url": "http://{{host}}/notif/new",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-10-27T23:48:02.987Z",
+            "modified": "2023-10-28T16:30:37.269Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"emisor\": 0,\n  \"destino\": 3,\n  \"evento\": \"NEW_VISITA\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c4416b93-3c4c-4c39-89f3-abc17e27d4f0",
+            "colId": "780a5cb7-ae9b-462c-ad09-b64e326b955e",
+            "containerId": "",
+            "name": "suscribe",
+            "url": "http://localhost:8002/suscribe",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-10-27T23:57:00.243Z",
+            "modified": "2023-10-28T16:51:10.946Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"event\": \"NEW_VISITA\",\n  \"data\": {\n    \"id\": 86,\n    \"id_incidencia\": \"64\",\n    \"id_cuadrilla\": 3,\n    \"fecha\": \"2023-11-20T10:00:33.000Z\"\n  }\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
