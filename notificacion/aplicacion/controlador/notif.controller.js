@@ -1,4 +1,4 @@
-import visitaServices from '../servicios/notif.services.js';
+import notifServices from '../servicios/notif.services.js';
 import {
   createChannel,
   subscribeMessage,
@@ -6,9 +6,7 @@ import {
 
 try {
   const channel = await createChannel();
-  await subscribeMessage({ channel, service: visitaServices });
-
-  console.log('Message broker set up successfully.');
+  const subs = await subscribeMessage({ channel, service: notifServices });
 } catch (error) {
   console.error('Error setting up message broker:', error.message);
 }
@@ -28,7 +26,7 @@ const errorWrapper = (err, req, res, next) => {
 
 const getAllNotif = async (req, res) => {
   try {
-    const result = await visitaServices.getAllNotif();
+    const result = await notifServices.getAllNotif();
     res.json(result);
   } catch (error) {
     console.error(error);
@@ -39,7 +37,7 @@ const getAllNotif = async (req, res) => {
 const getAllByID = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await visitaServices.getAllByUserId(id);
+    const result = await notifServices.getAllByUserId(id);
     res.json(result);
   } catch (error) {
     console.error(error);
@@ -70,7 +68,7 @@ const getLastNotif = async (req, res) => {
 const createNotif = async (req, res) => {
   try {
     const { emisor, destino, evento } = req.body;
-    const result = await visitaServices.createNotif({
+    const result = await notifServices.createNotif({
       emisor,
       destino,
       evento,
@@ -82,22 +80,26 @@ const createNotif = async (req, res) => {
   }
 };
 
-const suscribeNotif = async (req, res) => {
-  /** visita
-   * {
-      "id": 86,
-      "id_incidencia": "64",
-      "id_cuadrilla": 3,
-      "fecha": "2023-11-20T10:00:33.000Z"
+/** notif
+   *{
+      "event": "NEW_notif",
+      "data": {
+        "id": 86,
+        "id_incidencia": "64",
+        "id_cuadrilla": 3,
+        "fecha": "2023-11-20T10:00:33.000Z"
+      }
     }
    */
+const suscribeNotif = async (req, res) => {
   try {
-    const { emisor, destino, evento } = req.body;
-    const result = await visitaServices.createNotif({
-      emisor,
-      destino,
-      evento,
-    });
+    const { event, data } = req.body;
+    const result = await notifServices.subscribeEvent(
+      JSON.stringify({
+        event,
+        data,
+      }),
+    );
     res.status(200).json(result);
   } catch (error) {
     console.error(error);
@@ -105,7 +107,7 @@ const suscribeNotif = async (req, res) => {
   }
 };
 
-const readeNotif = async (req, res) => {
+const readedNotif = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -116,39 +118,6 @@ const readeNotif = async (req, res) => {
   }
 };
 
-const registerAtencion = async (req, res, next) => {
-  try {
-    res.json('Hola');
-  } catch (error) {
-    console.error(error);
-    res.status(400).json(error.message);
-  }
-};
-
-// prueba
-const getConnection = async (req, res, next) => {
-  try {
-    res.json('Hello World');
-  } catch (error) {
-    console.error(error);
-    res.status(500).json(error);
-  }
-};
-
-const postPage = (req, res) => {
-  res.send('POST request to the homepage');
-};
-
-const putPage = (req, res) => {
-  const { id, name, description } = req.body;
-  res.send(`Name ${id} ${name}, desc ${description}`);
-};
-
-const deletePage = (req, res) => {
-  const { id } = req.params;
-  res.send(`Delete record with id ${id}`);
-};
-
 export default {
   errorWrapper,
   getAllNotif,
@@ -156,6 +125,6 @@ export default {
   getAllToday,
   getLastNotif,
   createNotif,
-  getConnection,
-  deletePage,
+  suscribeNotif,
+  readedNotif,
 };

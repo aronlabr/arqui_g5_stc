@@ -19,13 +19,6 @@ const createNotif = async ({ emisor, destino, evento }) => {
     CHECK_VISITA: 'Se complejo una visita con exito',
   };
 
-  const notif = {
-    emisor,
-    destino,
-    evento,
-    mensaje: pos_mensajes[evento],
-  };
-
   const info = await query(consultas.createNotif, [
     emisor,
     destino,
@@ -66,34 +59,36 @@ async function subscribeEvent(message) {
   try {
     message = JSON.parse(message);
     const { event, data } = message;
-    const pos_notif = {
-      NEW_VISITA: {
-        emisor: 0,
-        destino: data.id_cuadrilla,
-      },
-      UPDATE_VISITA: {
-        emisor: data.id_cuadrilla,
-        destino: 0,
-      },
-      CHECK_VISITA: {
-        emisor: data.id_cuadrilla,
-        destino: 0,
-      },
-    };
 
-    const result = await createNotif({ ...pos_notif[event], evento: event });
+    let result;
 
     switch (event) {
       case 'NEW_VISITA':
+        result = await createNotif({
+          emisor: 0,
+          destino: data.id_cuadrilla,
+          evento: event,
+        });
         console.log('Notification de Visita Agendada');
         break;
       case 'UPDATE_VISITA':
+        result = await createNotif({
+          emisor: data.id_cuadrilla,
+          destino: 0,
+          evento: event,
+        });
         console.log('Notificacion de Visita actualizada');
         break;
       case 'CHECK_VISITA':
+        result = await createNotif({
+          emisor: data.id_cuadrilla,
+          destino: 0,
+          evento: event,
+        });
         console.log('Notificacion de Visita realizada');
         break;
     }
+    return result;
   } catch (error) {
     throw new Error(error);
   }
