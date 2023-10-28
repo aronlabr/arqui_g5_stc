@@ -1,6 +1,6 @@
 // services/incidentService.js
-const conex = require('../../infraestructura/conexion/conex');
-import consultas from '../../infraestructura/consultas/queries.js';
+const conex = require('../../infraestructura/conexion/db');
+const consultas = require('../../infraestructura/consultas/queries.js');
 
 const getAllIncidents = async () => {
     return new Promise((resolve, reject) => {
@@ -108,7 +108,7 @@ const updateIncidentSolution = async (incidentId, solution) => {
 };
   
 
-export default {
+module.exports = {
   getAllIncidents,
   getIncidentsByClientId,
   getIncidentsByPuntoAtencionID,

@@ -1,5 +1,5 @@
 // Para la tabla Incidencia
-export default {
+module.exports = {
     // Consulta para obtener todas las incidencias
     getAllIncidents: 'SELECT * FROM incidencia',
   
@@ -26,4 +26,4 @@ export default {
 
     // Consulta para actualizar la descripción de la solución de una incidencia específica
     updateIncidentSolution: 'UPDATE incidencia SET descripcion_sol = ? WHERE id_incidencia = ?',
-  };
+};

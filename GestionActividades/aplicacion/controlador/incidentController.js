@@ -1,5 +1,5 @@
 // controllers/incidentController.js
-import incidentService from '../services/incidentServices.js';
+const incidentService = require('../servicios/incidentServices.js');
 
 const getAllIncidents = async (req, res) => {
   try {
@@ -86,7 +86,8 @@ const updateIncidentSolution = async (req, res) => {
     }
 };
   
-export default {
+module.exports = {
+    getAllIncidents,
     getIncidentsByClientId,
     getIncidentsByPuntoAtencionID,
     getSolvedIndcidents,

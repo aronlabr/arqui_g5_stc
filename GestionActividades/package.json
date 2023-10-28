@@ -2,9 +2,10 @@
   "name": "gestionactividades",
   "version": "1.0.0",
   "description": "Microservicio de Gestión de Actividades para registrar, supervisar y gestionar las actividades de campo de tu empresa.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Nathaly Pichilingue",
   "license": "ISC",

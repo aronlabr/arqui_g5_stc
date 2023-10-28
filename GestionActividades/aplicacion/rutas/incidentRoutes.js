@@ -1,14 +1,20 @@
-import express from 'express';
-import incidentController from '../controllers/incidentController';
+const express = require('express');
+const incidentController = require('../controlador/incidentController');
 
 const router = express.Router();
 
-router.get('/incidents/client/:clientId', incidentController.getIncidentsByClientId);
-router.get('/incidents/puntoatencion/:puntoAtencionId', incidentController.getIncidentsByPuntoAtencionID);
-router.get('/incidents/solved', incidentController.getSolvedIndcidents);
-router.get('/incidents/notsolved', incidentController.getNotSolvedIncidents);
-router.get('/incidents/date/:creationDate', incidentController.getIncidentsByCreationDate);
-router.post('/incidents', incidentController.createIncident);
-router.put('/incidents/solution/:incidentId', incidentController.updateIncidentSolution);
+// Define una ruta raíz
+router.get('/', (req, res) => {
+    res.status(200).json({ message: 'Bienvenido a la API de incidentes' });
+});
 
-export default router;
+router.get('/client/:clientId', incidentController.getIncidentsByClientId);
+router.get('/puntoatencion/:puntoAtencionId', incidentController.getIncidentsByPuntoAtencionID);
+router.get('/solved', incidentController.getSolvedIndcidents);
+router.get('/notsolved', incidentController.getNotSolvedIncidents);
+router.get('/date/:creationDate', incidentController.getIncidentsByCreationDate);
+router.post('/createincident', incidentController.createIncident);
+router.put('/solution/:incidentId', incidentController.updateIncidentSolution);
+
+
+module.exports = router;
