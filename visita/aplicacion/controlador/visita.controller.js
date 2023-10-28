@@ -39,12 +39,6 @@ const getVisitaById = async (req, res) => {
   try {
     const { id } = req.params;
     const result = await visitaServices.getVisitaById(id);
-    const message = { event: 'CHECK_VISITA', data: { ...result } };
-    await publishMessage({
-      channel,
-      binding_key: NOTIF_BINDING_KEY,
-      message: JSON.stringify(message),
-    });
 
     res.json(result);
   } catch (error) {
@@ -61,6 +55,14 @@ const createVisita = async (req, res) => {
       cuadrilla,
       fecha,
     });
+
+    const message = { event: 'NEW_VISITA', data: { ...result } };
+    await publishMessage({
+      channel,
+      binding_key: NOTIF_BINDING_KEY,
+      message: JSON.stringify(message),
+    });
+
     res.json(result);
   } catch (error) {
     console.error(error);
@@ -100,7 +102,12 @@ const updateVisita = async (req, res) => {
       });
     } else throw new Error("Incorrect state. Expected 'nv' or 'vna' or 'va'");
 
-    publishMessage(channel, VISITA_BINDING_KEY, result);
+    const message = { event: 'UPDATE_VISITA', data: { ...result } };
+    await publishMessage({
+      channel,
+      binding_key: NOTIF_BINDING_KEY,
+      message: JSON.stringify(message),
+    });
 
     res.status(200).json(result);
   } catch (error) {
@@ -119,6 +126,13 @@ const registerAtencion = async (req, res, next) => {
     let { nombre, dni, descrip, imgAnt, imgDes } = req.body;
     const result = await visitaServices.updateAtencion({
       ...{ id, id_atencion, nombre, dni, descrip, imgAnt, imgDes },
+    });
+
+    const message = { event: 'CHECK_VISITA', data: { ...result } };
+    await publishMessage({
+      channel,
+      binding_key: NOTIF_BINDING_KEY,
+      message: JSON.stringify(message),
     });
 
     res.json(result);

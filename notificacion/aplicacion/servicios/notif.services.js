@@ -81,7 +81,7 @@ async function subscribeEvent(message) {
       },
     };
 
-    createNotif({ ...pos_notif[event], evento: event });
+    const result = await createNotif({ ...pos_notif[event], evento: event });
 
     switch (event) {
       case 'NEW_VISITA':

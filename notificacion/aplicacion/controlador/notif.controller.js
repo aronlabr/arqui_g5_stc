@@ -1,4 +1,4 @@
-import visitaServices from '../servicios/visita.services.js';
+import visitaServices from '../servicios/notif.services.js';
 import {
   createChannel,
   subscribeMessage,
