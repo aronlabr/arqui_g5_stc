@@ -15,6 +15,9 @@
     {
 			"path": "notificacion",
 		},
+    {
+			"path": "gateway",
+		},
 	],
 	"settings": {
 		"editor.tabSize": 2,

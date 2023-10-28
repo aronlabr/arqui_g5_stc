@@ -1,0 +1,14 @@
+**/node_modules
+**/Dockerfile
+docker-compose.yaml
+.dockerignore
+.git
+.gitignore
+g5_project.code-workspace
+
+# web app
+**/.next
+**/.vscode
+**/.eslintrc.json
+**/jsconfig.json
+**/README.md
