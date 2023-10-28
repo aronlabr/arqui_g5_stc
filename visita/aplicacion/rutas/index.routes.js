@@ -1,24 +1,24 @@
 import { Router } from 'express';
-import testController from '../controlador/test.controller.js';
+import visitaController from '../controlador/visita.controller.js';
 
 const router = Router();
 
-router.use(testController.errorWrapper);
+router.use(visitaController.errorWrapper);
 
-router.get('/', testController.getAllVisitas);
+router.get('/', visitaController.getAllVisitas);
 
-router.get('/:id', testController.getVisitaById);
+router.get('/:id', visitaController.getVisitaById);
 
-router.post('/new', testController.createVisita);
+router.post('/new', visitaController.createVisita);
 
-router.get('/cuadrilla/:id', testController.getAllVisitasByCuadrilla);
+router.get('/cuadrilla/:id', visitaController.getAllVisitasByCuadrilla);
 
-router.put('/:id', testController.updateVisita);
+router.put('/:id', visitaController.updateVisita);
 
-router.post('/:id', testController.registerAtencion);
+router.post('/:id', visitaController.registerAtencion);
 
-router.get('/ping', testController.getConnection);
+router.get('/ping', visitaController.getConnection);
 
-router.delete('/products/:id', testController.deletePage);
+router.delete('/products/:id', visitaController.deletePage);
 
 export { router };

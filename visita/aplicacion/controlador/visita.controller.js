@@ -1,4 +1,4 @@
-import testServices from '../servicios/test.services.js';
+import visitaServices from '../servicios/visita.services.js';
 import { VISITA_BINDING_KEY, NOTIF_BINDING_KEY } from '../config.js';
 import {
   createChannel,
@@ -27,7 +27,7 @@ const errorWrapper = (err, req, res, next) => {
 
 const getAllVisitas = async (req, res) => {
   try {
-    const result = await testServices.getAllVisitas();
+    const result = await visitaServices.getAllVisitas();
     res.json(result);
   } catch (error) {
     console.error(error);
@@ -38,7 +38,7 @@ const getAllVisitas = async (req, res) => {
 const getVisitaById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await testServices.getVisitaById(id);
+    const result = await visitaServices.getVisitaById(id);
     const message = { event: 'CHECK_VISITA', data: { ...result } };
     await publishMessage({
       channel,
@@ -56,7 +56,7 @@ const getVisitaById = async (req, res) => {
 const createVisita = async (req, res) => {
   try {
     const { incidencia, cuadrilla, fecha } = req.body;
-    const result = await testServices.createVisita({
+    const result = await visitaServices.createVisita({
       incidencia,
       cuadrilla,
       fecha,
@@ -73,7 +73,7 @@ const createVisita = async (req, res) => {
 const getAllVisitasByCuadrilla = async (req, res) => {
   try {
     const cuadrilla = req.params.id;
-    const result = await testServices.getAllVisitasByCuadrilla(cuadrilla);
+    const result = await visitaServices.getAllVisitasByCuadrilla(cuadrilla);
     res.json(result);
   } catch (error) {
     console.error(error);
@@ -86,16 +86,16 @@ const updateVisita = async (req, res) => {
     const { id } = req.params;
     const { estado } = req.body;
     let result;
-    const visita = await testServices.getVisitaById(id);
+    const visita = await visitaServices.getVisitaById(id);
     if (visita.estado) throw new Error('State already register');
     if (estado === 'nv' || estado === 'vna') {
       const { motivo, imagen, lat, lon } = req.body;
-      result = await testServices.updateVisitaNVoNA({
+      result = await visitaServices.updateVisitaNVoNA({
         ...{ id, estado, motivo, imagen, lat, lon },
       });
     } else if (estado === 'va') {
       const { lat, lon } = req.body;
-      result = await testServices.updateVisitaAtencionTr({
+      result = await visitaServices.updateVisitaAtencionTr({
         ...{ id, estado, lat, lon },
       });
     } else throw new Error("Incorrect state. Expected 'nv' or 'vna' or 'va'");
@@ -112,12 +112,12 @@ const updateVisita = async (req, res) => {
 const registerAtencion = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { id_atencion } = await testServices.getVisitaById(id);
+    const { id_atencion } = await visitaServices.getVisitaById(id);
 
     if (!id_atencion) throw new Error('Id Atencion incorrecto');
 
     let { nombre, dni, descrip, imgAnt, imgDes } = req.body;
-    const result = await testServices.updateAtencion({
+    const result = await visitaServices.updateAtencion({
       ...{ id, id_atencion, nombre, dni, descrip, imgAnt, imgDes },
     });
 
