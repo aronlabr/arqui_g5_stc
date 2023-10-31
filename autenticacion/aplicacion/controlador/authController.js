@@ -1,71 +1,82 @@
-const jwt = require('jsonwebtoken')
-const bcryptjs = require('bcryptjs')
-const conexion = require('../../infraestructura/conexion/db')
-const servicios = require('../servicios/authservicios')
-const {promisify} = require('util')
-const queries = require('../../infraestructura/consultas/queries')
+const jwt = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs');
+const servicios = require('../servicios/authservicios');
 
 //procedimiento para registrarnos
-exports.register = async(req, res)=>{
-
-    try {
-        const {user, pass, nombre, ape_pat, ape_mat, dni, telefono, direccion, correo} = req.body
-        let passHash = await bcryptjs.hash(pass, 8)
-        //console.log(passHash)
-        conexion.query('INSERT INTO usuarios SET ?', {user: user, nombre: nombre, pass: passHash, ape_pat: ape_pat, ape_mat: ape_mat, dni: dni, telefono: telefono, direccion: direccion, correo:correo}, (error, results)=>{
-            if(error){console.log(error)}
-            res.redirect('/')
-            console.log("Usuario: "+ user +" registrado correctamente.")
-        })
-    } catch (error) {
-        console.log(error)
-    }
-    
-}
+exports.register = async (req, res) => {
+  try {
+    const {
+      user,
+      pass,
+      nombre,
+      ape_pat,
+      ape_mat,
+      dni,
+      telefono,
+      direccion,
+      correo,
+    } = req.body;
+    let passHash = await bcryptjs.hash(pass, 8);
+    //console.log(passHash)
+    const result = await servicios.createNewUser({
+      user,
+      pass: passHash,
+      nombre,
+      ape_pat,
+      ape_mat,
+      dni,
+      telefono,
+      direccion,
+      correo,
+    });
+    console.log('Usuario: ' + user + ' registrado correctamente.');
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error.message);
+  }
+};
 
 //procedimiento oara login
-exports.login = async(req, res)=>{
-        try {
-        const {user, pass} = req.body  
-        //const result = await servicios.getUserbyUser(user) 
-            conexion.query(queries.getUserbyUserQ,[user],async (error, results)=>{
-                    //inicio de sesion correcto
-                    const id = results[0].id_usuario
-                    const token = jwt.sign({id_usuario:id}, "grupoCinco")
-                    console.log("TOKEN: "+token+" para el usuario: "+user)
+exports.login = async (req, res) => {
+  try {
+    const { user, pass } = req.body;
 
-                    const cookiesOptions = {
-                        expires: new Date(Date.now()+ 90 * 24 * 60 * 60 * 1000),
-                        httpOnly: true
-                    }
-                    res.cookie('jwt', token, cookiesOptions)
-                })
-    }catch (error) {
-        console.log(error)
-    }
-}
+    const [token, cookiesOptions] = await servicios.loginUser({ user, pass });
+
+    res.cookie('jwt', token, cookiesOptions);
+    res.json({ login: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
 
 //procedimiento para autenticar
-exports.isAuthenticated = async (req, res, next)=>{
-    if(req.cookies.jwt){
-        try {
-            const decodificada = await promisify(jwt.verify)(req.cookies.jwt, "grupoCinco")
-            conexion.query('SELECT * FROM usuarios WHERE id_usuario = ?', [decodificada.id_usuario], (error, results)=>{
-                if(!results){return next()}
-                req.user = results[0]
-                return next()
-            })
-        } catch (error) {
-            console.log(error)
-            return next()
-        }
-    }else{
-        res.redirect('/login')
-    }
-}
+exports.isAuthenticated = async (req, res, next) => {
+  try {
+    if (!req.cookies.jwt) throw new Error('No JWT available');
+
+    const isLive = await servicios.isSesionLive(jwt);
+
+    if (!isLive) res.status(400).json({ login: false });
+
+    res.status(200).json({ login: true });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error.message);
+    return next();
+  }
+};
 
 //para cerrar sesion
-exports.logout = (req, res)=>{
-    res.clearCookie('jwt')
-    return res.redirect('/')
-}
+exports.logout = (req, res) => {
+  try {
+    if (!req.cookies.jwt) throw new Error('No JWT found');
+    res.clearCookie('jwt');
+    res.status(200).json({ login: false });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error.message);
+  }
+};

@@ -7,6 +7,9 @@
 			"path": "microservicio",
 		},
     {
+			"path": "autenticacion",
+		},
+    {
 			"path": "web",
 		},
     {

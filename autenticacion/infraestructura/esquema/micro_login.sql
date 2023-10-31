@@ -38,7 +38,7 @@ CREATE TABLE `usuarios` (
   `telefono` varchar(100) NOT NULL,
   `direccion` varchar(100) NOT NULL,
   `correo` varchar(100) NOT NULL,
-  `foto` varchar(100) NOT NULL
+  `foto` varchar(100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

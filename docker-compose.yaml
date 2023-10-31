@@ -14,6 +14,7 @@ services:
     volumes:
       - ./visita/infraestructura/esquema/Setup_Visita_DB.sql:/docker-entrypoint-initdb.d/Setup_Visita_DB.sql
       - ./notificacion/infraestructura/esquema/Setup_Notif_DB.sql:/docker-entrypoint-initdb.d/Setup_Notif_DB.sql
+      - ./autenticacion/infraestructura/esquema/micro_login.sql:/docker-entrypoint-initdb.d/micro_login.sql
     networks:
       - backend
   
@@ -40,6 +41,19 @@ services:
     # env_file: /visita/.env.local
     ports:
       - "8002:8002"
+    depends_on:
+      - "sql-db"
+    networks:
+      - backend
+  auth:
+    build:
+      dockerfile: Dockerfile
+      context: ./autenticacion
+    container_name: auth
+    restart: unless-stopped
+    # env_file: /visita/.env.local
+    ports:
+      - "8003:8003"
     depends_on:
       - "sql-db"
     networks:
