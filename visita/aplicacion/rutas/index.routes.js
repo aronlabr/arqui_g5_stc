@@ -17,8 +17,6 @@ router.put('/:id', visitaController.updateVisita);
 
 router.post('/:id', visitaController.registerAtencion);
 
-router.get('/ping', visitaController.getConnection);
-
-router.delete('/products/:id', visitaController.deletePage);
+router.delete('/:id', visitaController.deleteVisitaById);
 
 export { router };

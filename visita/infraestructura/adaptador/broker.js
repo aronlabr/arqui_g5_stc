@@ -1,6 +1,10 @@
 /* Message Broker - RabbitMQ */
 import amqplib from 'amqplib';
-import { MESSAGE_BROKER_URL, EXCHANGE_NAME } from '../../aplicacion/config.js';
+import {
+  MESSAGE_BROKER_URL,
+  EXCHANGE_NAME,
+  QUEUE_NAME,
+} from '../../aplicacion/config.js';
 
 // Create channel
 export async function createChannel() {
@@ -8,6 +12,7 @@ export async function createChannel() {
     const connection = await amqplib.connect(MESSAGE_BROKER_URL);
     const channel = await connection.createChannel();
     await channel.assertExchange(EXCHANGE_NAME, 'direct', false);
+    console.log('Message broker set up successfully.');
     return channel;
   } catch (error) {
     throw new Error(error.message);
@@ -25,11 +30,12 @@ export async function publishMessage({ channel, binding_key, message }) {
 // Suscribe messages
 export async function subscribeMessage({ channel, service, binding_key }) {
   try {
-    const appQueue = await channel.assertQueue('QUEUE_NAME');
+    const appQueue = await channel.assertQueue(QUEUE_NAME);
     channel.bindQueue(appQueue.queue, EXCHANGE_NAME, binding_key);
-    channel.consume(appQueue.queue, (data) => {
+    await channel.consume(appQueue.queue, async (data) => {
       console.log('receive data');
       console.log(data.content.toString());
+      await service.subscribeEvent(data.content.toString());
       channel.ack(data);
     });
   } catch (error) {

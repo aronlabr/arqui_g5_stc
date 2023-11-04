@@ -48,3 +48,9 @@ COMMIT;
 
 # Actualizar informacion nueva atencion
 UPDATE g5_db.atencion SET atencion.cl_dni = ?, atencion.cl_nombre = ?, atencion.descripcion = ?, atencion.img_antes = ?, atencion.img_desp = ? WHERE atencion.id_atencion = ?;
+
+# Eliminar visita
+DELETE FROM visita WHERE visita.id = ?
+
+# Eliminar notificaciones
+DELETE FROM atencion WHERE atencion.id_atencion = ?;

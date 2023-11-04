@@ -18,10 +18,12 @@ function removeEmpty(obj) {
 const getVisitaById = async (idVisita) => {
   let [result] = await query(consultas.getVisitaById, [idVisita]);
   result = removeEmpty(result);
+  if (!result) throw new Error(`Visita #${idVisita} not found`);
   return result;
 };
 
 const createVisita = async ({ incidencia, cuadrilla, fecha }) => {
+  cuadrilla = parseInt(cuadrilla);
   let info = await query(consultas.createVisita, [
     incidencia,
     cuadrilla,
@@ -47,8 +49,8 @@ const updateVisitaNVoNA = async ({ id, estado, motivo, imagen, lat, lon }) => {
     lon,
     id,
   ]);
-  const result = getVisitaById(info.insertId);
-  return result;
+  console.log(info);
+  return info.insertId;
 };
 
 const updateVisitaAtencionTr = async ({ id, estado, lat, lon }) => {
@@ -59,8 +61,7 @@ const updateVisitaAtencionTr = async ({ id, estado, lat, lon }) => {
     lon,
     id,
   ]);
-  const result = getVisitaById(id);
-  return result;
+  return id;
 };
 
 const updateAtencion = async ({
@@ -84,18 +85,41 @@ const updateAtencion = async ({
   return result;
 };
 
-const getNumberquery = async () => {
-  const [result] = await query(consultas.prueba);
-  return result;
+const deleteVisitaById = async (idVisita) => {
+  const visita = await getVisitaById(idVisita);
+  if (visita) await query(consultas.deleteVisita, [idVisita]);
+  return visita;
 };
 
-const getNumber = () => {
-  return 2;
+const deleteAtencionById = async (idAtencion) => {
+  await query(consultas.deleteVisita, [idAtencion]);
 };
+
+async function subscribeEvent(message) {
+  message = JSON.parse(message);
+  const { event, data } = message;
+  const eventHandler = {
+    ERROR_NEW_VISITA: () => deleteVisitaById(data.id),
+    ERROR_UPDATE_VISITA: () =>
+      updateVisitaNVoNA({
+        ...{ id: data.id, estado: '', imagen: '', lat: null, lon: null },
+      }),
+    ERROR_CHECK_VISITA: async () => {
+      await updateVisitaAtencionTr({
+        ...{ id: data.id, estado: '', lat: null, lon: null },
+      });
+      await deleteAtencionById(data.id_atencion);
+    },
+  };
+  try {
+    const result = await eventHandler[event]();
+    console.log(`Found an ${event}, undoing operation`);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export default {
-  getNumberquery,
-  getNumber,
   getAllVisitas,
   getVisitaById,
   createVisita,
@@ -103,4 +127,6 @@ export default {
   updateVisitaNVoNA,
   updateVisitaAtencionTr,
   updateAtencion,
+  deleteVisitaById,
+  subscribeEvent,
 };

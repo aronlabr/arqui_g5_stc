@@ -3,11 +3,17 @@ import { VISITA_BINDING_KEY, NOTIF_BINDING_KEY } from '../config.js';
 import {
   createChannel,
   publishMessage,
+  subscribeMessage,
 } from '../../infraestructura/adaptador/broker.js';
 
 let channel;
 try {
   channel = await createChannel();
+  await subscribeMessage({
+    channel,
+    service: visitaServices,
+    binding_key: VISITA_BINDING_KEY,
+  });
 } catch (error) {
   console.error('Error setting up message broker:' + error.message);
 }
@@ -56,13 +62,20 @@ const createVisita = async (req, res) => {
       fecha,
     });
 
-    const message = { event: 'NEW_VISITA', data: { ...result } };
+    const message = {
+      event: 'NEW_VISITA',
+      data: {
+        ...result,
+        id_cuadrilla: cuadrilla,
+        error: false || req.body?.error,
+      },
+    };
     await publishMessage({
       channel,
       binding_key: NOTIF_BINDING_KEY,
       message: JSON.stringify(message),
     });
-
+    if (res.prevent) return result;
     res.json(result);
   } catch (error) {
     console.error(error);
@@ -87,29 +100,33 @@ const updateVisita = async (req, res) => {
   try {
     const { id } = req.params;
     const { estado } = req.body;
-    let result;
-    const visita = await visitaServices.getVisitaById(id);
+    let visita = await visitaServices.getVisitaById(id);
+
     if (visita.estado) throw new Error('State already register');
+    let info;
     if (estado === 'nv' || estado === 'vna') {
       const { motivo, imagen, lat, lon } = req.body;
-      result = await visitaServices.updateVisitaNVoNA({
+      info = await visitaServices.updateVisitaNVoNA({
         ...{ id, estado, motivo, imagen, lat, lon },
       });
     } else if (estado === 'va') {
       const { lat, lon } = req.body;
-      result = await visitaServices.updateVisitaAtencionTr({
+      info = await visitaServices.updateVisitaAtencionTr({
         ...{ id, estado, lat, lon },
       });
     } else throw new Error("Incorrect state. Expected 'nv' or 'vna' or 'va'");
 
-    const message = { event: 'UPDATE_VISITA', data: { ...result } };
+    visita = await visitaServices.getVisitaById(id);
+    const message = { event: 'UPDATE_VISITA', data: { ...visita } };
+
     await publishMessage({
       channel,
       binding_key: NOTIF_BINDING_KEY,
       message: JSON.stringify(message),
     });
 
-    res.status(200).json(result);
+    if (res.prevent) return visita;
+    res.status(200).json(visita);
   } catch (error) {
     console.error(error);
     res.status(400).json(error.message);
@@ -142,38 +159,26 @@ const registerAtencion = async (req, res, next) => {
   }
 };
 
-// prueba
-const getConnection = async (req, res, next) => {
+const deleteVisitaById = async (req, res) => {
   try {
-    res.json('Hello World');
+    const { id } = req.params;
+    const visita = await visitaServices.deleteVisitaById(id);
+    res.json(visita);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+    res.status(500).json(error.message);
   }
 };
 
-const postPage = (req, res) => {
-  res.send('POST request to the homepage');
-};
-
-const putPage = (req, res) => {
-  const { id, name, description } = req.body;
-  res.send(`Name ${id} ${name}, desc ${description}`);
-};
-
-const deletePage = (req, res) => {
-  const { id } = req.params;
-  res.send(`Delete record with id ${id}`);
-};
+// prueba
 
 export default {
   errorWrapper,
   getAllVisitas,
   getVisitaById,
+  getAllVisitasByCuadrilla,
   createVisita,
   updateVisita,
   registerAtencion,
-  getAllVisitasByCuadrilla,
-  getConnection,
-  deletePage,
+  deleteVisitaById,
 };

@@ -6,7 +6,7 @@ import {
 
 try {
   const channel = await createChannel();
-  const subs = await subscribeMessage({ channel, service: notifServices });
+  await subscribeMessage({ channel, service: notifServices });
 } catch (error) {
   console.error('Error setting up message broker:', error.message);
 }

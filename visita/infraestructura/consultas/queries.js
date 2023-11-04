@@ -8,9 +8,9 @@ export default {
   getAllPendientesByCuadrilla:
     'SELECT id, id_incidencia, id_cuadrilla, fecha, estado, id_atencion FROM g5_db.visita WHERE visita.estado="" id_cuadrilla = ?',
   getAllNAoNV:
-    'SELECT id id_incidencia, id_cuadrilla, fecha, estado, motivo, imagen, lat, lon FROM g5_db.visita WHERE estado= ?',
+    'SELECT id, id_incidencia, id_cuadrilla, fecha, estado, motivo, imagen, lat, lon FROM g5_db.visita WHERE estado= ?',
   getAllNAoNVByCuadrilla:
-    'SELECT id id_incidencia, id_cuadrilla, fecha, estado, motivo, imagen, lat, lon FROM g5_db.visita WHERE estado= ? id_cuadrilla = ?',
+    'SELECT id, id_incidencia, id_cuadrilla, fecha, estado, motivo, imagen, lat, lon FROM g5_db.visita WHERE estado= ? id_cuadrilla = ?',
   getVisitaById:
     'SELECT * FROM g5_db.visita LEFT JOIN g5_db.atencion ON visita.id_atencion = atencion.id_atencion WHERE visita.id = ?',
   createVisita:
@@ -24,4 +24,6 @@ export default {
   },
   updateAtencion:
     'UPDATE g5_db.atencion SET atencion.cl_dni = ?, atencion.cl_nombre = ?, atencion.descripcion = ?, atencion.img_antes = ?, atencion.img_desp = ? WHERE atencion.id_atencion = ?;',
+  deleteVisita: 'DELETE FROM visita WHERE visita.id = ?',
+  deleteAtencion: 'DELETE FROM atencion WHERE atencion.id_atencion = ?',
 };

@@ -20,6 +20,16 @@ export async function createChannel() {
   }
 }
 
+// Publish messages
+export async function publishMessage({ channel, binding_key, message }) {
+  try {
+    await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
+    console.log('Mensaje enviado: ' + message);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 // Suscribe messages
 export async function subscribeMessage({ channel, service }) {
   try {
@@ -27,7 +37,7 @@ export async function subscribeMessage({ channel, service }) {
 
     channel.bindQueue(appQueue.queue, EXCHANGE_NAME, NOTIF_BINDING_KEY);
 
-    channel.consume(appQueue.queue, async (data) => {
+    await channel.consume(appQueue.queue, async (data) => {
       console.log('receive data');
       console.log(data.content.toString());
       await service.subscribeEvent(data.content.toString());

@@ -1,6 +1,18 @@
 import { query } from '../../infraestructura/conexion/db.js';
 import consultas from '../../infraestructura/consultas/queries.js';
+import { VISITA_BINDING_KEY } from '../config.js';
+import {
+  publishMessage,
+  createChannel,
+} from '../../infraestructura/adaptador/broker.js';
 // Admin
+
+let channel;
+try {
+  channel = await createChannel();
+} catch (error) {
+  console.error('Error setting up message broker:', error.message);
+}
 
 const getAllNotif = async () => {
   const result = await query(consultas.getAllNotif);
@@ -25,7 +37,6 @@ const createNotif = async ({ emisor, destino, evento }) => {
     evento,
     pos_mensajes[evento],
   ]);
-
   /** info
    {
     "fieldCount": 0,
@@ -46,53 +57,48 @@ const updateReadNotif = async (idNotif) => {
   return 'Notificacion marcada como leida';
 };
 
-const getNumberquery = async () => {
-  const [result] = await query(consultas.prueba);
-  return result;
-};
-
-const getNumber = () => {
-  return 2;
-};
-
 async function subscribeEvent(message) {
+  message = JSON.parse(message);
+  const { event, data } = message;
+  const participants = {
+    ch_1: { emisor: 0, destino: data.id_cuadrilla },
+    ch_2: { emisor: data.id_cuadrilla, destino: 0 },
+  };
+  let result;
+
+  const eventHandler = {
+    NEW_VISITA: {
+      ...{ participant: participants.ch_1, evento: event, cl: 'Agendada' },
+    },
+    UPDATE_VISITA: {
+      ...{ participant: participants.ch_2, evento: event, cl: 'actualizada' },
+    },
+    CHECK_VISITA: {
+      ...{ participant: participants.ch_2, evento: event, cl: 'realizada' },
+    },
+  };
+
   try {
-    message = JSON.parse(message);
-    const { event, data } = message;
-
-    let result;
-
-    switch (event) {
-      case 'NEW_VISITA':
-        result = await createNotif({
-          emisor: 0,
-          destino: data.id_cuadrilla,
-          evento: event,
-        });
-        console.log('Notification de Visita Agendada');
-        break;
-      case 'UPDATE_VISITA':
-        result = await createNotif({
-          emisor: data.id_cuadrilla,
-          destino: 0,
-          evento: event,
-        });
-        console.log('Notificacion de Visita actualizada');
-        break;
-      case 'CHECK_VISITA':
-        result = await createNotif({
-          emisor: data.id_cuadrilla,
-          destino: 0,
-          evento: event,
-        });
-        console.log('Notificacion de Visita realizada');
-        break;
-    }
-    return result;
+    result = await createNotif({
+      ...eventHandler[event].participant,
+      evento: event,
+    });
+    console.log('Notification de Visita ' + eventHandler[event].cl);
   } catch (error) {
-    throw new Error(error);
+    console.error(error.message);
+    const message = { event: `ERROR_${event}`, data };
+    console.log(message);
+    await publishMessage({
+      channel,
+      binding_key: VISITA_BINDING_KEY,
+      message: JSON.stringify(message),
+    });
   }
 }
+
+// await subscribeEvent(
+//   JSON.stringify({ event: 'CHECK_VISITA', data: { id_cuadrilla: '5' } }),
+// );
 
 export default {
   getAllNotif,

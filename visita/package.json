@@ -6,15 +6,21 @@
   "type": "module",
   "scripts": {
     "start": "node aplicacion",
-    "dev": "nodemon main"
+    "dev": "nodemon main",
+    "deploy": "NODE_ENV=dock node aplicacion"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/server": "^4.9.5",
     "amqplib": "^0.10.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "graphql": "^16.8.1",
+    "graphql-scalars": "^1.22.4",
+    "graphql-tag": "^2.12.6",
     "mysql2": "^3.6.1"
   },
   "devDependencies": {
