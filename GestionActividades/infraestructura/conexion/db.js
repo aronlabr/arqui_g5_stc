@@ -1,10 +1,10 @@
 const mysql = require('mysql2');
 
 const dbConfig = {
-    host: 'sql9.freemysqlhosting.net',
-    user: 'sql9656920',
-    password: 'ZDmGk4QLCm', // Agrega aquí la contraseña si es necesaria
-    database: 'sql9656920'
+    host: 'db4free.net',
+    user: 'g5gestact',
+    password: 'g5gestact', // Agrega aquí la contraseña si es necesaria
+    database: 'g5_gestact'
 };
   
   // Establece la conexión a la base de datos
