@@ -2,13 +2,21 @@ import express from 'express';
 import { router } from './rutas/index.routes.js';
 import { PORT } from './config.js';
 import morgan from 'morgan';
+import graphServer from './graphql/server.js';
 
 const app = express();
 
-app.use(morgan('dev'));
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
+try {
+  const graph = await graphServer(app);
+  console.log('GraphQL launch in /graphql');
+} catch (error) {
+  console.error(error);
+}
+
+app.use(morgan('dev'));
 app.use('/', router);
 
 const server = app.listen(PORT, () =>

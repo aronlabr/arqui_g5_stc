@@ -1,0 +1,92 @@
+query Visitas {
+  visitas {
+    id
+    id_incidencia
+    id_cuadrilla
+    estado
+    fecha
+    motivo
+    lat
+    lon
+    id_atencion
+  }
+}
+
+query Visita {
+  visita(id: 24) {
+    id
+    id_cuadrilla
+    id_incidencia
+    fecha
+    estado
+    atencion {
+      id_atencion
+      cl_nombre
+      cl_dni
+      descripcion
+    }
+    lat
+    lon
+    motivo
+    imagen
+  }
+}
+
+mutation CreateVisita($incidencia: String, $cuadrilla: Int, $fecha: DateTime) {
+  createVisita(incidencia: $incidencia, cuadrilla: $cuadrilla, fecha: $fecha) {
+    id
+    id_cuadrilla
+    id_incidencia
+    fecha
+  }
+}
+
+{
+  "incidencia": "68",
+  "cuadrilla": 4,
+  "fecha": "2023-11-11T22:26:51.000Z"
+}
+
+mutation UpdateVisita($visita: VisitaInput) {
+  updateVisita(visita: $visita) {
+    id
+    id_cuadrilla
+    id_incidencia
+    id_atencion
+    estado
+    fecha
+    lat
+    lon
+  }
+}
+
+{
+  "visita": {
+    "id": 53,
+    "estado": "va",
+    "lat": 6.8698661,
+    "lon": 81.3481058
+  }
+}
+
+mutation UpdateNVNA($visita: VisitaInput) {
+  updateVisita(visita: $visita) {
+    id
+    estado
+    motivo
+    lat
+    lon
+    imagen
+  }
+}
+
+{
+  "visita": {
+    "id": 66,
+    "estado": "vna",
+    "lat": 44.351935,
+    "lon": -87.8445954,
+    "motivo": "Duis bibendum. Morbi non quam",
+    "imagen": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJUSURBVDjLpVPfa1JRHP/Ma15JRQ3dsEAfBkoOIXqoJ3uqaOwhAgObQXuwnvw/Yhuh+LCnyNfe9jisEYI1RuFQGxv5stCciTKHzTnn7r19v8ccq1wvHTgc7j3fz6/vOWdM0zT8z9D/+WNjYyN1cnLyuN/v62kFrWIeHx/z+joUCj0aSVAoFKwEeGmz2UKyfBE9AkFVIfyRS7vdhnR6JUxffxPk8/l7DHY4HFdMJhN2vlbB6qqqQdVUItKgEFmv1xsdgYpX3G63+NHtHqFP4M+FHBGop/PO3WkRYyQBZzQYDGi32wNlRYF/6ppQ136pc7PPdcDMCoG4iA+FrRfyn2hVhDrvuWbu/9vBoFeaKGaCqcB1oT50oZ3TA93QwZBAkLCyMsjesOzg1X4C6pm6kRGG4MPDLkpftvCjvY/xcSe2y1tomto4dHeEu1QqpdVqtVa1Wn2+ubm5JAjYGoO5gaurbyHLBszNPUGn08Hkt0lcWnNiff09IpEI7ckgAnsul1sol8vOUwd8CnSZ0Grt4eHsLBYWX5CTbbhcLgQCAQYhHo9jd3dXsVgsb2Kx2DQRPBs6+JjNZm8Ui0WYzWaRLXjrNoqFPMLhMN1COw4ODtBoNJBMJrt6vT5EJR2r1SoLgmg0ejORSMxUKpUlIhA3au3DO24r5ufnwbeTB0fS6XSyJEnL/E19OBo7+xr9fv9Vr9ebDgaDl2lIRqMR9XodpVJJZPd4PJiYmOBe7ZGYLpPJfP+NwOfzSZQ5QIrLROAkkMRH3Ww2n7IgvRVWvkCRFepFgxw9+AkiS4SDy9ee+AAAAABJRU5ErkJggg=="
+  }
+}
