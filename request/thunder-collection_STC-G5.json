@@ -1,0 +1,346 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "STC-G5",
+    "dateExported": "2023-11-01T18:35:38.632Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "Visitas",
+            "containerId": "",
+            "created": "2023-11-01T18:01:25.298Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "12e7fcab-aed2-4452-9975-a79f5a899ec7",
+            "name": "Visita GQL",
+            "containerId": "",
+            "created": "2023-11-01T18:01:50.371Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "530a9d04-b63c-4e05-98d1-5e4070c59deb",
+            "name": "Notificaciones",
+            "containerId": "",
+            "created": "2023-11-01T18:03:06.784Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "f3d594f9-2c17-4c59-90dc-13bd7deeb07f",
+            "name": "Auth",
+            "containerId": "",
+            "created": "2023-11-01T18:03:26.606Z",
+            "sortNum": 50000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "8051cfb8-0a94-46e0-a351-a23f3be860a0",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "All Visitas",
+            "url": "http://{{host2}}/visita/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-10-18T23:55:37.986Z",
+            "modified": "2023-10-28T18:01:47.927Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8b8a29bd-943d-478e-90f6-961ce15fd5c9",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "12e7fcab-aed2-4452-9975-a79f5a899ec7",
+            "name": "All Visitas",
+            "url": "http://{{graphql}}",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-11-01T17:59:39.098Z",
+            "modified": "2023-11-01T18:09:06.816Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "graphql",
+                "raw": "",
+                "form": [],
+                "graphql": {
+                    "query": "query Visitas {\r\n  visitas {\r\n    id\r\n    id_incidencia\r\n    id_cuadrilla\r\n    estado\r\n    fecha\r\n    motivo\r\n    lat\r\n    lon\r\n    id_atencion\r\n  }\r\n}"
+                }
+            },
+            "tests": []
+        },
+        {
+            "_id": "618856fb-dbf6-46d0-9a46-eada4829dc44",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "530a9d04-b63c-4e05-98d1-5e4070c59deb",
+            "name": "All Notif",
+            "url": "http://{{host}}/notif/all",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-01T18:03:09.197Z",
+            "modified": "2023-11-01T18:03:09.197Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f51264d5-1479-4efa-8433-5276183838af",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "f3d594f9-2c17-4c59-90dc-13bd7deeb07f",
+            "name": "Register User",
+            "url": "http://{{host}}/auth/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-11-01T18:03:28.438Z",
+            "modified": "2023-11-01T18:03:28.438Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"user\": \"aldairam\", \n    \"pass\": \"123456\", \n    \"nombre\": \"Aldair\", \n    \"ape_pat\": \"Asencio\", \n    \"ape_mat\": \"Medina\",\n    \"dni\": \"71732780\",\n    \"telefono\": \"916829404\", \n    \"direccion\": \"Pasaje Ayar Manco 123\", \n    \"correo\": \"aldair@gmail.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "38a408e3-4714-434c-9f43-3361e0634285",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "Una Visita",
+            "url": "http://localhost:8001/61",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-10-18T23:57:37.735Z",
+            "modified": "2023-11-01T17:16:54.339Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c86d7571-688b-4c0e-883e-23697df8a737",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "530a9d04-b63c-4e05-98d1-5e4070c59deb",
+            "name": "New Notif",
+            "url": "http://{{host}}/notif/new",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-11-01T18:03:10.155Z",
+            "modified": "2023-11-01T18:03:10.155Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"emisor\": 0,\n  \"destino\": 3,\n  \"evento\": \"NEW_VISITA\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c11d65bb-7a04-4895-ae1a-731c2685afd0",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "f3d594f9-2c17-4c59-90dc-13bd7deeb07f",
+            "name": "login",
+            "url": "http://{{host}}/auth/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-11-01T18:03:29.365Z",
+            "modified": "2023-11-01T18:03:29.365Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"user\": \"aldairam\",\n    \"pass\": \"123456\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "fa016c2c-2cfe-49fe-aaf3-2b7e88f49e45",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "Visitas de Cuadrilla",
+            "url": "http://{{host}}/visita/cuadrilla/2",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-10-19T00:24:14.122Z",
+            "modified": "2023-10-28T15:46:14.821Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c4416b93-3c4c-4c39-89f3-abc17e27d4f0",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "530a9d04-b63c-4e05-98d1-5e4070c59deb",
+            "name": "suscribe",
+            "url": "http://localhost:8002/suscribe",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-11-01T18:03:10.973Z",
+            "modified": "2023-11-01T18:03:10.973Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"event\": \"NEW_VISITA\",\n  \"data\": {\n    \"id\": 86,\n    \"id_incidencia\": \"64\",\n    \"id_cuadrilla\": 3,\n    \"fecha\": \"2023-11-20T10:00:33.000Z\"\n  }\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "0c2d30ab-6d33-449e-83a4-008b69481f55",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "f3d594f9-2c17-4c59-90dc-13bd7deeb07f",
+            "name": "Logout",
+            "url": "http://{{host}}/auth/logout",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-11-01T18:03:30.166Z",
+            "modified": "2023-11-01T18:03:30.166Z",
+            "headers": [
+                {
+                    "name": "Cookie",
+                    "value": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjoxLCJpYXQiOjE2OTg3MTI2MTh9.DmDCVR6tEBJPskNCEdPa8HNr_UvZwJhH0QnhKBIL7aY"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8a899426-08a9-4459-bc9f-3ed9f9570bee",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "Nueva Visita",
+            "url": "http://{{host2}}/visita/new",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-10-19T00:25:50.820Z",
+            "modified": "2023-10-28T18:11:24.294Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"incidencia\": 12,\n  \"fecha\": \"2023-11-24 05:00:33\",\n  \"cuadrilla\": 5\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1ae90377-0bc4-4210-a677-30bf0d298ee7",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "No visitado o atendido",
+            "url": "http://localhost:3000/81",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2023-10-19T01:01:45.224Z",
+            "modified": "2023-10-19T17:10:22.414Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"estado\":\"nv\",\n  \"motivo\":\"Nulla facilisi. Cras non velit nec nisi vulputate nonummy.\",\n  \"imagen\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8\",\n  \"lat\":44.000,\n  \"lon\":-88.000\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "4f666f0d-781d-47e8-9188-32deb72e4245",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "Visita por Atender",
+            "url": "",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2023-10-19T17:07:40.278Z",
+            "modified": "2023-10-19T17:07:54.416Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"estado\": \"va\",\n  \"lat\": 44.000,\n  \"lon\": -88.000\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "917a3b20-ed3d-478b-96fe-cab972570aff",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "Registrar Atencion realizada",
+            "url": "http://{{host}}/visita/81",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-10-19T17:01:10.811Z",
+            "modified": "2023-10-28T15:49:39.304Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\":\"Obe Grewe\",\n  \"dni\":45424027,\n  \"descrip\":\"Vestibulum sed magna at nunc commodo placerat. Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.\",\n  \"imgAnt\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRv\",\n  \"imgDes\":\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRv\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6b13c21e-9d2c-466f-b8a1-9b70482c3f4d",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "c5aca7a8-e145-4618-b9fc-b211ac166081",
+            "name": "Eliminar Visita",
+            "url": "http://localhost:8001/61",
+            "method": "DELETE",
+            "sortNum": 80000,
+            "created": "2023-11-01T17:19:11.045Z",
+            "modified": "2023-11-01T17:19:24.832Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "b98f721c-ed13-4e60-bdab-a4efacb664cb",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "12e7fcab-aed2-4452-9975-a79f5a899ec7",
+            "name": "Visita",
+            "url": "http://{{graphql}}",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2023-11-01T18:07:35.044Z",
+            "modified": "2023-11-01T18:13:58.569Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "graphql",
+                "raw": "",
+                "form": [],
+                "graphql": {
+                    "query": "query Visita {\r\n  visita(id: 18) {\r\n    id\r\n    id_cuadrilla\r\n    id_incidencia\r\n    fecha\r\n    estado\r\n    atencion {\r\n      id_atencion\r\n      cl_nombre\r\n      cl_dni\r\n      descripcion\r\n    }\r\n    lat\r\n    lon\r\n    motivo\r\n    imagen\r\n  }\r\n}"
+                }
+            },
+            "tests": []
+        },
+        {
+            "_id": "b9f64246-3480-4bf9-903e-1d2aaae104b8",
+            "colId": "80a80500-4fd4-4e37-9f31-6d6fd3140044",
+            "containerId": "12e7fcab-aed2-4452-9975-a79f5a899ec7",
+            "name": "Nueva Visita",
+            "url": "http://{{graphql}}",
+            "method": "POST",
+            "sortNum": 120000,
+            "created": "2023-11-01T18:12:41.906Z",
+            "modified": "2023-11-01T18:13:29.292Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "graphql",
+                "raw": "",
+                "form": [],
+                "graphql": {
+                    "query": "mutation CreateVisita($incidencia: String, $cuadrilla: Int, $fecha: DateTime) {\r\n  createVisita(incidencia: $incidencia, cuadrilla: $cuadrilla, fecha: $fecha) {\r\n    id\r\n    id_cuadrilla\r\n    id_incidencia\r\n    fecha\r\n  }\r\n}\r\n",
+                    "variables": "{\r\n  \"incidencia\": \"68\",\r\n  \"cuadrilla\": 4,\r\n  \"fecha\": \"2023-11-11T22:26:51.000Z\"\r\n}"
+                }
+            },
+            "tests": []
+        }
+    ]
+}
