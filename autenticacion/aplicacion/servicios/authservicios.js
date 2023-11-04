@@ -36,7 +36,7 @@ const loginUser = async ({ user, pass }) => {
   };
 
   console.log('TOKEN: ' + token + ' para el usuario: ' + user);
-  return [token, cookiesOptions];
+  return [data, token, cookiesOptions];
 };
 
 const isSesionLive = async ({ user, ckjwt }) => {

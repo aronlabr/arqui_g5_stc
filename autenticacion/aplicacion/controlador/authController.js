@@ -42,10 +42,13 @@ exports.login = async (req, res) => {
   try {
     const { user, pass } = req.body;
 
-    const [token, cookiesOptions] = await servicios.loginUser({ user, pass });
+    const [data, token, cookiesOptions] = await servicios.loginUser({
+      user,
+      pass,
+    });
 
     res.cookie('jwt', token, cookiesOptions);
-    res.json({ login: true });
+    res.json({ login: true, data });
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
