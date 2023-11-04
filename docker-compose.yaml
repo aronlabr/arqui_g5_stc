@@ -17,7 +17,7 @@ services:
       - ./autenticacion/infraestructura/esquema/micro_login.sql:/docker-entrypoint-initdb.d/micro_login.sql
     networks:
       - backend
-  
+
   visita:
     build:
       dockerfile: Dockerfile
@@ -58,6 +58,20 @@ services:
       - "sql-db"
     networks:
       - backend
+
+  tecnicos:
+      build:
+        dockerfile: Dockerfile
+        context: ./tecnicos
+      container_name: tecnicos
+      restart: unless-stopped
+      # env_file: /visita/.env.local
+      ports:
+        - "8004:8004"
+      depends_on:
+        - "sql-db"
+      networks:
+        - backend
 
   gateway:
     build:

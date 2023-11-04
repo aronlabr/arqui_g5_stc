@@ -13,13 +13,13 @@
 			"path": "web",
 		},
     {
-			"path": "MicroservicioAuth",
-		},
-    {
 			"path": "visita",
 		},
     {
 			"path": "notificacion",
+		},
+    {
+			"path": "tecnicos",
 		},
     {
 			"path": "gateway",
