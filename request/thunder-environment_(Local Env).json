@@ -1,0 +1,22 @@
+{
+    "client": "Thunder Client",
+    "environmentName": "(Local Env)",
+    "dateExported": "2023-11-01T18:36:37.997Z",
+    "version": "1.0",
+    "global": true,
+    "local": true,
+    "variables": [
+        {
+            "name": "host",
+            "value": "stc-g5-api.sa-east-1.elasticbeanstalk.com/api"
+        },
+        {
+            "name": "host2",
+            "value": "localhost/api"
+        },
+        {
+            "name": "graphql",
+            "value": "localhost:8001/graphql"
+        }
+    ]
+}
