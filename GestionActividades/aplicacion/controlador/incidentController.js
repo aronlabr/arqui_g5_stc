@@ -85,6 +85,18 @@ const updateIncidentSolution = async (req, res) => {
       res.status(500).json({ error: 'Error al actualizar la descripción de la solución' });
     }
 };
+
+const updateIncidentStateSolved = async (req, res) => {
+  try {
+      const { incidentId } = req.params;
+      const result = await incidentService.updateIncidentStateSolved(incidentId);
+      res.status(200).json(result);
+  } catch (error) {
+      res.status(500).json({ error: 'Error al actualizar el estado de la incidencia' });
+  }
+};
+
+
   
 module.exports = {
     getAllIncidents,
@@ -95,5 +107,6 @@ module.exports = {
     getIncidentsByCreationDate,
     createIncident,
     updateIncidentSolution,
+    updateIncidentStateSolved,
 };
 

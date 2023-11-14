@@ -4,17 +4,15 @@ const incidentController = require('../controlador/incidentController');
 const router = express.Router();
 
 // Define una ruta raíz
-router.get('/', (req, res) => {
-    res.status(200).json({ message: 'Bienvenido a la API de incidentes' });
-});
-
-router.get('/client/:clientId', incidentController.getIncidentsByClientId);
-router.get('/puntoatencion/:puntoAtencionId', incidentController.getIncidentsByPuntoAtencionID);
-router.get('/solved', incidentController.getSolvedIndcidents);
-router.get('/notsolved', incidentController.getNotSolvedIncidents);
-router.get('/date/:creationDate', incidentController.getIncidentsByCreationDate);
-router.post('/createincident', incidentController.createIncident);
-router.put('/solution/:incidentId', incidentController.updateIncidentSolution);
+router.get('/', incidentController.getAllIncidents);
+router.get('/client/:clientId', incidentController.getIncidentsByClientId); //Obtener un incidente por ID del cliente
+router.get('/puntoatencion/:puntoAtencionId', incidentController.getIncidentsByPuntoAtencionID); //Obtener incidente por ID del punto de atención
+router.get('/solved', incidentController.getSolvedIndcidents); //Obtener incidentes resueltos
+router.get('/notsolved', incidentController.getNotSolvedIncidents); //Obtener incidentes no resueltos
+router.get('/date/:creationDate', incidentController.getIncidentsByCreationDate); //obtener incidente por día de creación
+router.post('/createincident', incidentController.createIncident); //crear incidentes
+router.put('/solution/:incidentId', incidentController.updateIncidentSolution); //Actualizar incidente con la solución
+router.put('/updatetosolved/:incidentId', incidentController.updateIncidentStateSolved);// Ruta para actualizar el estado de una incidencia a "resuelta"
 
 
 module.exports = router;
