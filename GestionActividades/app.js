@@ -1,4 +1,5 @@
 const express = require('express');
+const expressListEndpoints = require('express-list-endpoints');
 const dbConnection = require('./infraestructura/conexion/db'); // Asegúrate de usar la ruta correcta al archivo db.js
 const incidentRoutes = require('./aplicacion/rutas/incidentRoutes');
 
@@ -23,5 +24,7 @@ app.use((err, req, res, next) => {
 // Inicio del servidor
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
+  console.log('Rutas registradas en la aplicación:');
+  console.log(expressListEndpoints(app));
 });
 

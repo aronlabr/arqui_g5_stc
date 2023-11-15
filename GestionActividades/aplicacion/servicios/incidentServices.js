@@ -106,6 +106,19 @@ const updateIncidentSolution = async (incidentId, solution) => {
       });
     });
 };
+
+const updateIncidentStateSolved = async (incidentId) => {
+  return new Promise((resolve, reject) => {
+      const query = consultas.updateIncidentStateSolved;
+      conex.query(query, [incidentId], (error, results) => {
+          if (error) {
+              reject(error);
+          } else {
+              resolve(results);
+          }
+      });
+  });
+};
   
 
 module.exports = {
@@ -117,4 +130,5 @@ module.exports = {
   getIncidentsByCreationDate,
   createIncident,
   updateIncidentSolution,
+  updateIncidentStateSolved,
 };

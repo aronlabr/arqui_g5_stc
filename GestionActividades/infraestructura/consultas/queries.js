@@ -10,10 +10,10 @@ module.exports = {
     getIncidentsByPuntoAtencionID : 'SELECT * FROM incidencia WHERE id_puntoatencion = ?',
 
     //Consulta para obtener incidencias ya resueltas
-    getSolvedIndcidents: 'SELECT * FROM incidencia WHERE estado == 1',
+    getSolvedIndcidents: 'SELECT * FROM incidencia WHERE estado = 1',
 
     //Consulta para obtener incidencias no resueltas
-    getNotSolvedIncidents : 'SELECT * FROM incidencia WHERE estado == 0',
+    getNotSolvedIncidents : 'SELECT * FROM incidencia WHERE estado = 0',
 
     //Consulta para obtener incidencias por fecha de creacion
     getIncidentsByCreationDate: 'SELECT * FROM incidencia WHERE fc_creacion = ?',
@@ -26,4 +26,8 @@ module.exports = {
 
     // Consulta para actualizar la descripción de la solución de una incidencia específica
     updateIncidentSolution: 'UPDATE incidencia SET descripcion_sol = ? WHERE id_incidencia = ?',
+
+    // Consulta para actualizar la descripción de la solución de una incidencia específica
+    updateIncidentStateSolved: 'UPDATE incidencia SET estado = 1 WHERE id_incidencia = ?',
+
 };
