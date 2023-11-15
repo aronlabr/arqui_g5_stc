@@ -1,4 +1,5 @@
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
+const deps = require('./package.json').dependencies;
 
 /** @type {import('next').NextConfig} */
 
@@ -20,7 +21,18 @@ const nextConfig = {
         remotes: remotes(isServer),
         exposes: {},
         extraOptions: {},
-        shared: {},
+        shared: {
+          bootstrap: {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps.bootstrap,
+          },
+          'react-bootstrap': {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps['react-bootstrap'],
+          },
+        },
       }),
     );
 

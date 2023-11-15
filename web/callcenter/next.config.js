@@ -1,4 +1,5 @@
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
+const deps = require('./package.json').dependencies;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -13,12 +14,23 @@ const nextConfig = {
         },
         exposes: {
           // specify exposed pages and components
-          './agregarForm': './src/pages/agregarForm.js',
+          './agregarInc': './src/pages/agregarForm.js',
         },
         extraOptions: {
           exposePages: true,
         },
-        shared: {},
+        shared: {
+          bootstrap: {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps.bootstrap,
+          },
+          'react-bootstrap': {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps['react-bootstrap'],
+          },
+        },
       }),
     );
 
