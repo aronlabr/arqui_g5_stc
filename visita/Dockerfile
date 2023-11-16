@@ -5,7 +5,7 @@ WORKDIR /app
 # Install dependencies
 COPY package*.json .
 # Install dependencies
-RUN npm install -p
+RUN npm install
 # Add your application code to the container
 COPY . .
 # Start your Node.js application

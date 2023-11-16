@@ -27,4 +27,3 @@ app.listen(port, () => {
   console.log('Rutas registradas en la aplicación:');
   console.log(expressListEndpoints(app));
 });
-

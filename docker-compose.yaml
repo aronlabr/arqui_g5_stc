@@ -1,8 +1,8 @@
-version: '3.7'
+version: '3.9'
 services:
   sql-db:
     image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
+    # command: --default-authentication-plugin=caching_sha2_password
     container_name: sql-db
     restart: unless-stopped
     # env_file: ./visita/.env.local
@@ -15,8 +15,14 @@ services:
       - ./visita/infraestructura/esquema/Setup_Visita_DB.sql:/docker-entrypoint-initdb.d/Setup_Visita_DB.sql
       - ./notificacion/infraestructura/esquema/Setup_Notif_DB.sql:/docker-entrypoint-initdb.d/Setup_Notif_DB.sql
       - ./autenticacion/infraestructura/esquema/micro_login.sql:/docker-entrypoint-initdb.d/micro_login.sql
+      - ./GestionActividades/infraestructura/esquema/g5_gestact.sql:/docker-entrypoint-initdb.d/g5_gestact.sql
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 3
 
   visita:
     build:
@@ -45,6 +51,7 @@ services:
       - "sql-db"
     networks:
       - backend
+
   auth:
     build:
       dockerfile: Dockerfile
@@ -60,19 +67,35 @@ services:
       - backend
 
   tecnicos:
-      build:
-        dockerfile: Dockerfile
-        context: ./tecnicos
-      container_name: tecnicos
-      restart: unless-stopped
-      # env_file: /visita/.env.local
-      ports:
-        - "8004:8004"
-      depends_on:
-        - "sql-db"
-      networks:
-        - backend
+    build:
+      dockerfile: Dockerfile
+      context: ./tecnicos
+    container_name: tecnicos
+    restart: unless-stopped
+    # env_file: /visita/.env.local
+    ports:
+      - "8004:8004"
+    depends_on:
+      sql-db:
+        condition: service_healthy
+    networks:
+      - backend
 
+  incidentes:
+    build:
+      dockerfile: Dockerfile
+      context: ./GestionActividades
+    container_name: incidentes
+    restart: unless-stopped
+    # env_file: /visita/.env.local
+    ports:
+      - "8005:8005"
+    depends_on:
+      sql-db:
+        condition: service_healthy
+    networks:
+      - backend
+    
   gateway:
     build:
       dockerfile: Dockerfile
@@ -82,6 +105,9 @@ services:
     depends_on:
       - "visita"
       - "notif"
+      - "auth"
+      - "tecnicos"
+      - "incidentes"
     ports:
       - "80:80"
     networks:
