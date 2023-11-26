@@ -27,6 +27,9 @@
     {
 			"path": "gateway",
 		},
+    {
+			"path": "lambda",
+		},
 	],
 	"settings": {
 		"editor.tabSize": 2,
