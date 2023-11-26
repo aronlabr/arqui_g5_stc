@@ -10,9 +10,6 @@
 			"path": "autenticacion",
 		},
     {
-			"path": "web",
-		},
-    {
 			"path": "visita",
 		},
     {
