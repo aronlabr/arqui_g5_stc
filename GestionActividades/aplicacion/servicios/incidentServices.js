@@ -27,6 +27,19 @@ const getIncidentsByClientId = async (clientId) => {
       });
     });
 };
+
+const getIncidentsByIncidentId = async (incidentId) => {
+  return new Promise((resolve, reject) => {
+    const query = consultas.getIncidentsByIncidentID;
+    conex.query(query, [incidentId], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
   
 const getIncidentsByPuntoAtencionID = async (puntoAtencionId) => {
     return new Promise((resolve, reject) => {
@@ -123,6 +136,7 @@ const updateIncidentStateSolved = async (incidentId) => {
 
 module.exports = {
   getAllIncidents,
+  getIncidentsByIncidentId,
   getIncidentsByClientId,
   getIncidentsByPuntoAtencionID,
   getSolvedIndcidents,
