@@ -15,7 +15,7 @@ const nextConfig = {
         exposes: {
           // specify exposed pages and components
           './incidencias': './src/pages/incidlist.js',
-          './table': './src/components/ui/table.jsx',
+          './tabledata': './src/components/ui/table.jsx',
         },
         extraOptions: {
           exposePages: true,
@@ -26,6 +26,10 @@ const nextConfig = {
             requiredVersion: false,
           },
           'react-bootstrap': {
+            singleton: true,
+            requiredVersion: false,
+          },
+          dayjs: {
             singleton: true,
             requiredVersion: false,
           },
