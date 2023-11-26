@@ -31,13 +31,11 @@ CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `user` varchar(100) NOT NULL,
   `pass` varchar(100) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `ape_pat` varchar(100) NOT NULL,
-  `ape_mat` varchar(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `dni` varchar(100) NOT NULL,
-  `telefono` varchar(100) NOT NULL,
-  `direccion` varchar(100) NOT NULL,
-  `correo` varchar(100) NOT NULL,
+  `phone` varchar(100) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `foto` varchar(100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
