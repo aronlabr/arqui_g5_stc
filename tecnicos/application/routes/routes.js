@@ -10,5 +10,6 @@ router.get('/', async (req, res) => {
 router.get('/technicians', TechnicianController.getAll);
 router.post('/technicians', TechnicianController.create);
 router.put('/technicians/:id', TechnicianController.update);
+router.get('/technicians/:id', TechnicianController.getById);
 
 module.exports = router;
