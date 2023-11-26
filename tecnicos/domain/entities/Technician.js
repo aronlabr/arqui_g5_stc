@@ -20,6 +20,10 @@ const Technician = sequelize.define('technician', {
   },
   groupNumber: {
     type: DataTypes.INTEGER
+  },
+  dni: {
+    type: DataTypes.STRING, 
+    unique: true,
   }
 })
 
