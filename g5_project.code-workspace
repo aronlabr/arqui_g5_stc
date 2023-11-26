@@ -73,7 +73,8 @@
       "esbenp.prettier-vscode",
       "christian-kohler.path-intellisense",
       "chris-noring.node-snippets",
-      "ms-azuretools.vscode-docker"
+      "ms-azuretools.vscode-docker",
+      "rangav.vscode-thunder-client"
     ]
   },
 	"launch": {
