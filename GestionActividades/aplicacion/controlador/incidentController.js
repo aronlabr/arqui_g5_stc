@@ -10,6 +10,17 @@ const getAllIncidents = async (req, res) => {
   }
 }
 
+// Controlador para obtener incidencias por id
+const getIncidentsByIncidentID = async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const incidents = await incidentService.getIncidentsByIncidentId(incidentId);
+    res.status(200).json(incidents);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener la incidencia' });
+  }
+};
+
 // Controlador para obtener incidencias por cliente
 const getIncidentsByClientId = async (req, res) => {
     try {
@@ -100,6 +111,7 @@ const updateIncidentStateSolved = async (req, res) => {
   
 module.exports = {
     getAllIncidents,
+    getIncidentsByIncidentID,
     getIncidentsByClientId,
     getIncidentsByPuntoAtencionID,
     getSolvedIndcidents,

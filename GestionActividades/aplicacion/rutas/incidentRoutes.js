@@ -5,6 +5,7 @@ const router = express.Router();
 
 // Define una ruta raíz
 router.get('/', incidentController.getAllIncidents);
+router.get('/:incidentId', incidentController.getIncidentsByIncidentID); //Obtener un incidente por ID de incidencia
 router.get('/client/:clientId', incidentController.getIncidentsByClientId); //Obtener un incidente por ID del cliente
 router.get('/puntoatencion/:puntoAtencionId', incidentController.getIncidentsByPuntoAtencionID); //Obtener incidente por ID del punto de atención
 router.get('/solved', incidentController.getSolvedIndcidents); //Obtener incidentes resueltos

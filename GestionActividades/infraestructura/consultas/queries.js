@@ -2,6 +2,9 @@
 module.exports = {
     // Consulta para obtener todas las incidencias
     getAllIncidents: 'SELECT * FROM incidencia',
+
+    //Consulta para obtener incidencia por ID de incidencia
+    getIncidentsByIncidentID: 'SELECT * FROM incidencia WHERE id_incidencia = ?',
   
     // Consulta para obtener incidencias por el ID del cliente
     getIncidentsByClientId: 'SELECT * FROM incidencia WHERE id_cliente = ?',
@@ -27,7 +30,7 @@ module.exports = {
     // Consulta para actualizar la descripción de la solución de una incidencia específica
     updateIncidentSolution: 'UPDATE incidencia SET descripcion_sol = ? WHERE id_incidencia = ?',
 
-    // Consulta para actualizar la descripción de la solución de una incidencia específica
+    // Consulta para actualizar el estado de una incidencia específica a resuelto
     updateIncidentStateSolved: 'UPDATE incidencia SET estado = 1 WHERE id_incidencia = ?',
 
 };
