@@ -31,11 +31,9 @@ module.exports = {
   insertNewServicePoint:
     'INSERT INTO PuntoAtencion (latitud, longitud, direccion, ubigeo, foto) VALUES (?, ?, ?, ?, ?)',
 
-<<<<<<< HEAD
     // Consulta para crear un  nuevo cliente
     createClient: 'INSERT INTO cliente (nombre_full, dni, telefono, direccion, correo, foto) VALUES (?, ?, ?, ?, ?, ?)',
-};
-=======
+
   // Consulta para actualizar la descripción de la solución de una incidencia específica
   updateIncidentSolution:
     'UPDATE incidencia SET descripcion_sol = ? WHERE id_incidencia = ?',
@@ -44,4 +42,3 @@ module.exports = {
   updateIncidentStateSolved:
     'UPDATE incidencia SET estado = 1 WHERE id_incidencia = ?',
 };
->>>>>>> 86c0d9671f07f844300cd54c4ff17df1c7bd0175

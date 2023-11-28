@@ -126,7 +126,6 @@ const updateIncidentStateSolved = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
   // Controlador para crear una nuevo cliente
   const createClient = async (req, res) => {
     try {
@@ -152,17 +151,4 @@ module.exports = {
     updateIncidentSolution,
     updateIncidentStateSolved,
     createClient,
-=======
-module.exports = {
-  getAllIncidents,
-  getIncidentsByIncidentID,
-  getIncidentsByClientId,
-  getIncidentsByPuntoAtencionID,
-  getSolvedIndcidents,
-  getNotSolvedIncidents,
-  getIncidentsByCreationDate,
-  createIncident,
-  updateIncidentSolution,
-  updateIncidentStateSolved,
->>>>>>> 86c0d9671f07f844300cd54c4ff17df1c7bd0175
 };
