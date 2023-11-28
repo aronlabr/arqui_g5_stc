@@ -5,6 +5,7 @@ const bcryptjs = require('bcryptjs');
 const queries = require('../../infraestructura/consultas/queries.js');
 const { query } = require('../../infraestructura/conexion/db.js');
 const conexion = require('../../infraestructura/conexion/db');
+const { TECNICO_API } = require('../../config.js');
 
 /*
 {
@@ -38,26 +39,24 @@ const conexion = require('../../infraestructura/conexion/db');
   "groupNumber": 0
 }
 */
-
-const url = 'http://localhost/api/tecnicos/technicians';
-//'INSERT INTO usuarios (id_usuario, user, pass, name, dni, phone, address, email)
 const createNewUser = async (userData) => {
   const { user, pass } = userData;
-  let newTecnico = fetch(url, {
+
+  let newTecnico = await fetch(TECNICO_API, {
     method: 'POST',
     body: JSON.stringify({ ...userData, available: true, groupNumber: 0 }),
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then((res) => res.json());
+  }).then(async (res) => {
+    const response = await res.json();
+    if (!res.ok) throw new Error(`API Tecnicos: ${response.message}`);
+    return response;
+  });
 
-  const result = await query(queries.newUser, [
-    newTecnico.id,
-    user,
-    pass,
-    ...Object.values(userData),
-  ]);
+  const result = await query(queries.newUser, [user, pass, newTecnico.id]);
   if (!result) throw new Error('User no created or already exists');
+
   return result;
 };
 
@@ -72,8 +71,8 @@ const getUserbyUser = async (user) => {
 
 const loginUser = async ({ user, pass }) => {
   const data = await getUserbyUser(user);
-  const userDetails = fetch(url + '/' + data.id_usuario).then((res) =>
-    res.json(),
+  const userDetails = await fetch(TECNICO_API + '/' + data.id_tecnico).then(
+    (res) => res.json(),
   );
   const isAuth = await bcryptjs.compare(pass, data.pass);
 

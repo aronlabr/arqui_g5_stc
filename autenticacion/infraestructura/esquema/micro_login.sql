@@ -31,11 +31,7 @@ CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `user` varchar(100) NOT NULL,
   `pass` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `dni` varchar(100) NOT NULL,
-  `phone` varchar(100) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `id_tecnico` int(11) NOT NULL,
   `foto` varchar(100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

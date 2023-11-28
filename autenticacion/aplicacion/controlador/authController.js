@@ -5,29 +5,17 @@ const servicios = require('../servicios/authservicios');
 //procedimiento para registrarnos
 exports.register = async (req, res) => {
   try {
-    const {
-      user,
-      pass,
-      nombre,
-      ape_pat,
-      ape_mat,
-      dni,
-      telefono,
-      direccion,
-      correo,
-    } = req.body;
+    const { user, pass, name, dni, phone, address, email } = req.body;
     let passHash = await bcryptjs.hash(pass, 8);
     //console.log(passHash)
     const result = await servicios.createNewUser({
       user,
       pass: passHash,
-      nombre,
-      ape_pat,
-      ape_mat,
+      name,
       dni,
-      telefono,
-      direccion,
-      correo,
+      phone,
+      address,
+      email,
     });
     console.log('Usuario: ' + user + ' registrado correctamente.');
     res.status(200).json(result);
