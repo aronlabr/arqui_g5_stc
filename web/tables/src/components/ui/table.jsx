@@ -1,32 +1,76 @@
-'use client';
-
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { useState } from 'react';
-import { Table, Button, ButtonGroup, Form } from 'react-bootstrap';
+import {
+  Table,
+  Button,
+  ButtonGroup,
+  Form,
+  ButtonToolbar,
+  InputGroup,
+  Container,
+} from 'react-bootstrap';
 
-const columnsEx = [
-  {
-    header: '',
-    accesorKey: '',
-  },
-];
+function controlers(table, filtering, setFiltering) {
+  return (
+    <ButtonToolbar className="justify-content-between">
+      <ButtonGroup>
+        <Button
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Primera
+        </Button>
+        <ButtonGroup className="mx-2">
+          <Button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Anterior
+          </Button>
+          <Button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Siguiente
+          </Button>
+        </ButtonGroup>
+        <Button
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          Ultima
+        </Button>
+      </ButtonGroup>
+      <InputGroup className="w-50">
+        <Form.Control
+          type="text"
+          placeholder="Buscar"
+          value={filtering}
+          onChange={(e) => setFiltering(e.target.value)}
+        />
+      </InputGroup>
+    </ButtonToolbar>
+  );
+}
 
 function headers(table) {
   return table.getHeaderGroups().map((hGroup) => (
     <tr key={hGroup.id}>
       {hGroup.headers.map((header) => (
         <th
+          className="text-center"
           key={header.id}
-          onMouseDown={header.getResizeHandler()}
-          onTouchStart={header.getResizeHandler()}
+          onClick={header.column.getToggleSortingHandler()}
         >
-          {header.column.columnDef.header}
+          {header.placeholder ? null : header.column.columnDef.header}
+          {{ asc: '🔼', desc: '🔽' }[header.column.getIsSorted() ?? null]}
         </th>
       ))}
     </tr>
@@ -34,58 +78,40 @@ function headers(table) {
 }
 
 function body(table) {
-  return;
+  return table.getRowModel().rows.map((row) => (
+    <tr key={row.id}>
+      {row.getVisibleCells().map((cell) => (
+        <td key={cell.id}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </td>
+      ))}
+    </tr>
+  ));
 }
 
 export default function TableBase({ data, columns }) {
   const [filtering, setFiltering] = useState('');
+  const [sorting, setSorting] = useState([]);
   const table = useReactTable({
-    data,
     columns,
-    // columnResizeMode: 'onChange',
+    data,
     getCoreRowModel: getCoreRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
-    // getFilteredRowModel: getFilteredRowModel(),
-    // state: { globalFilter: filtering },
+    columnResizeMode: 'onChange',
+    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    initialState: { pageSize: 15 },
+    state: { sorting, globalFilter: filtering },
+    onSortingChange: setSorting,
   });
 
   return (
-    <>
-      <div>
-        <Button onClick={() => table.setPageIndex()}>Primera</Button>
-        <ButtonGroup className="ms-2 me-2">
-          <Button onClick={() => table.previousPage()}>Anterior</Button>
-          <Button onClick={() => table.nextPage()}>Siguiente</Button>
-        </ButtonGroup>
-        <Button onClick={() => table.setPageIndex(table.getPageCount() - 1)}>
-          Ultima
-        </Button>
-        <Form.Control
-          type="text"
-          placeholder="Buscar"
-          value={filtering}
-          onChange={(e) => setFiltering(e.target.value)}
-        />
-      </div>
-      <Table striped bordered hover>
+    <Container fluid>
+      {controlers(table, filtering, setFiltering)}
+      <Table striped hover>
         <thead>{headers(table)}</thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td></td>
-          </tr>
-        </tfoot>
+        <tbody>{body(table)}</tbody>
       </Table>
-    </>
+    </Container>
   );
 }

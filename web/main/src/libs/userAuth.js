@@ -1,7 +1,7 @@
 import { redirect, usePathname, useRouter } from 'next/navigation';
 
 const users = [
-  { id: 1, user: 'admin', pass: '123', point: '/dashboard' },
+  { id: 1, user: 'admin', pass: '123', point: '/admin' },
   { id: 2, user: 'operador', pass: '123', point: '/agregar' },
 ];
 

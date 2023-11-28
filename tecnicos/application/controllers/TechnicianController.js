@@ -33,9 +33,29 @@ const update = async (req, res) => {
   }
 }
 
+const getById = async (req, res) => {
+  try {
+    const technicianId = req.params.id;
+    const technician = await TechnicianService.getById(technicianId);
+
+    if (!technician) {
+      return res.status(404).json({
+        message: 'Técnico no encontrado'
+      })
+    }
+
+    res.json(technician);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    })
+  }
+}
+
 module.exports = {
   getAll,
   create,
-  update
+  update,
+  getById
 }
 

@@ -1,51 +1,73 @@
 import TableBase from '@components/ui/table';
+import dayjs from 'dayjs';
+import { Button } from 'react-bootstrap';
 import data from './MOCK_DATA.json';
-
+import Link from 'next/link';
 /*
-{"id":1,
-"cliente":"Elvin Cracknall",
-"direccion":"16th Floor",
-"estado":"ecracknall0@msn.com",
-"telefono":"495-597-8572",
-"descripcion_prob":"Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
-"visita":"04/10/2023"}
+{
+  "id_incidencia": 1,
+  "id_cliente": 1,
+  "id_puntoatencion": 1,
+  "estado": 0,
+  "fecha_ruta": "2023-11-02T00:00:00.000Z",
+  "descripcion_prob": "Lorem ipsum ipsum ipsum ipsum ipsum ipsum.",
+  "descripcion_sol": null,
+  "fc_creacion": "2023-11-01T00:00:00.000Z"
+}
 */
+
+// export async function getServerSideProps() {
+//   // Fetch data from external API
+//   try {
+//     const api = process.env.API_URL;
+//     const res = await fetch(`${api}`);
+//     const data = await res.json();
+//     // Pass data to the page via props
+//     return { props: { data } };
+//   } catch (error) {
+//     console.log(error.message);
+//     return { props: { data: [] } };
+//   }
+// }
 
 export default function Page() {
   const columns = [
     {
       header: 'ID',
-      accesorKey: 'id',
+      accessorFn: (row) => row.id_incidencia,
+      cell: ({ getValue }) => <Link href={`${getValue()}`}>{getValue()}</Link>,
     },
     {
       header: 'Cliente',
-      accesorKey: 'cliente',
+      accessorFn: (row) => row.id_cliente,
+    },
+    {
+      header: 'Punto de Atención',
+      accessorFn: (row) => row.id_puntoatencion,
     },
     {
       header: 'Estado',
-      accesorKey: 'estado',
-    },
-    {
-      header: 'Contacto',
-      accesorKey: 'telefono',
+      accessorFn: (row) => row.estado,
     },
     {
       header: 'Agenda de Visita',
-      accesorKey: 'visita',
+      accessorFn: (row) => dayjs(row.fecha_ruta).format('DD/MM/YY'),
+      cell: ({ getValue }) =>
+        getValue() !== '' ? getValue() : <Button>📆</Button>,
     },
     {
-      header: 'Dir',
-      accesorKey: 'direccion',
+      header: 'Problema',
+      accessorFn: (row) => row.descripcion_prob,
     },
     {
-      header: 'Prob',
-      accesorKey: 'descripcion_prob',
+      header: 'Solucion',
+      accessorFn: (row) => row.descripcion_sol,
     },
   ];
   return (
     <>
       <div>Lista de Incidencias</div>
-      <TableBase data={data.slice(0, 10)} columns={columns} />
+      <TableBase data={data} columns={columns} />
     </>
   );
 }

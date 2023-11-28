@@ -4,7 +4,7 @@ import { Input } from './formContent';
 const details = {
   client: 'a',
   name: 'b',
-  desc: 'c',
+  descripcion_prob: 'c',
   tel: 1,
   mail: 'a@a',
   dir: 'a',
@@ -14,7 +14,19 @@ const details = {
   tecnId: 12,
   fecha: '2012-12-12',
 };
-//
+// {
+//   "id_incidencia": 2,
+//   "id_cliente": 2,
+//   "id_puntoatencion": 2,
+//   "estado": 0,
+//   "fecha_ruta": "2023-11-15",
+//   "descripcion_prob": "Lorem ipsum ipsum ipsum ipsum ipsum ipsum.",
+//   "descripcion_sol": null,
+//   "fc_creacion": "2023-11-14"
+// }
+
+// Componente de formulario de incidencias
+
 export default function IncidentForm({
   title = null,
   handleSubmit = null,
@@ -31,11 +43,16 @@ export default function IncidentForm({
             {title && <h1 className="text-center">{title}</h1>}
             <Input
               label={'ID Cliente'}
-              name={'client'}
+              name={'id_cliente'}
               phold={'Numero de identificacion de cliente'}
-              type={'text'}
-              value={details?.client}
+              type={'number'}
+              value={details?.id_cliente}
             />
+            <input type="hidden" name={'id_incidencia'} value={2} />
+            <input type="hidden" name={'estado'} value={0} />
+            <input type="hidden" name={'fecha_ruta'} value={''} />
+            <input type="hidden" name={'descripcion_sol'} value={''} />
+            <input type="hidden" name={'fc_creacion'} value={'2023-11-10'} />
             <Input
               label={'Nombre'}
               name={'name'}
@@ -45,10 +62,10 @@ export default function IncidentForm({
             />
             <Input
               label={'Incidencia'}
-              name={'desc'}
+              name={'descripcion_prob'}
               phold={'Descripcion general de incidencia'}
               type={'text'}
-              value={details?.desc}
+              value={details?.descripcion_prob}
             />
             <Input
               label={'N° Contacto'}
@@ -66,24 +83,10 @@ export default function IncidentForm({
             />
             <Input
               label={'Direccion'}
-              name={'dir'}
+              name={'id_puntoatencion'}
               phold={'Direccion de domicilio'}
               type={'text'}
-              value={details?.dir}
-            />
-            <Input
-              label={'🔐'}
-              name={'pass2'}
-              phold={'Ingrese contraseña'}
-              type={'password'}
-              value={details?.pas2}
-            />
-            <Input
-              label={'🔐'}
-              name={'pass3'}
-              phold={'Ingrese contraseña'}
-              type={'password'}
-              value={details?.pass3}
+              value={details?.id_puntoatencion}
             />
             {isVisible && (
               <>

@@ -15,6 +15,7 @@ const nextConfig = {
         exposes: {
           // specify exposed pages and components
           './agregarInc': './src/pages/agregarForm.js',
+          './incidentForm': './src/components/ui/incidentForm.jsx',
         },
         extraOptions: {
           exposePages: true,

@@ -14,8 +14,14 @@ const update = async (id, data) => {
   return technician;
 }
 
+const getById = async (id) => {
+  return await Technician.findByPk(id);
+}
+
+
 module.exports = {
   getAll,
   create,
-  update
+  update,
+  getById
 }
