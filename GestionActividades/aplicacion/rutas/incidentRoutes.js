@@ -14,6 +14,7 @@ router.get('/date/:creationDate', incidentController.getIncidentsByCreationDate)
 router.post('/createincident', incidentController.createIncident); //crear incidentes
 router.put('/solution/:incidentId', incidentController.updateIncidentSolution); //Actualizar incidente con la solución
 router.put('/updatetosolved/:incidentId', incidentController.updateIncidentStateSolved);// Ruta para actualizar el estado de una incidencia a "resuelta"
+router.post('/createclient', incidentController.createClient); //crear clientes
 
 
 module.exports = router;
