@@ -13,8 +13,8 @@ const getAllIncidents = async (req, res) => {
 // Controlador para obtener incidencias por id
 const getIncidentsByIncidentID = async (req, res) => {
   try {
-    const { clientId } = req.params;
-    const incidents = await incidentService.getIncidentsByIncidentId(
+    const { incidentId } = req.params;
+    const [incidents] = await incidentService.getIncidentsByIncidentId(
       incidentId,
     );
     res.status(200).json(incidents);
