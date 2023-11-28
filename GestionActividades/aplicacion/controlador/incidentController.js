@@ -107,6 +107,17 @@ const updateIncidentStateSolved = async (req, res) => {
   }
 };
 
+  // Controlador para crear una nuevo cliente
+  const createClient = async (req, res) => {
+    try {
+      const clientData = req.body; // Suponiendo que los datos del cliente se envían en el cuerpo de la solicitud
+      const result = await incidentService.createClient(clientData);
+      res.status(201).json(result);
+    } catch (error) {
+      res.status(500).json({ error: 'Error al crear un nuevo cliente' });
+    }
+};
+
 
   
 module.exports = {
@@ -120,5 +131,6 @@ module.exports = {
     createIncident,
     updateIncidentSolution,
     updateIncidentStateSolved,
+    createClient,
 };
 

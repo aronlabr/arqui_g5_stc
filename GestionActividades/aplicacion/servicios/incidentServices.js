@@ -132,6 +132,20 @@ const updateIncidentStateSolved = async (incidentId) => {
       });
   });
 };
+
+const createClient = async (clientData) => {
+  const { nombre_full, dni, telefono, direccion, correo, foto } = incidentData;
+  return new Promise((resolve, reject) => {
+    const query = consultas.createClient;
+    conex.query(query, [nombre_full, dni, telefono, direccion, correo, foto], (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
   
 
 module.exports = {
@@ -145,4 +159,5 @@ module.exports = {
   createIncident,
   updateIncidentSolution,
   updateIncidentStateSolved,
+  createClient,
 };

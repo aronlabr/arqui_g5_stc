@@ -33,4 +33,6 @@ module.exports = {
     // Consulta para actualizar el estado de una incidencia específica a resuelto
     updateIncidentStateSolved: 'UPDATE incidencia SET estado = 1 WHERE id_incidencia = ?',
 
+    // Consulta para crear un  nuevo cliente
+    createClient: 'INSERT INTO cliente (nombre_full, dni, telefono, direccion, correo, foto) VALUES (?, ?, ?, ?, ?, ?)',
 };
