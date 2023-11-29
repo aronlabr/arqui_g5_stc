@@ -209,4 +209,5 @@ module.exports = {
   createIncident,
   updateIncidentSolution,
   updateIncidentStateSolved,
+  createClient,
 };
