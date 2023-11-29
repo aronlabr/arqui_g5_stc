@@ -86,14 +86,46 @@ const getIncidentsByCreationDate = async (req, res) => {
   }
 };
 
+const getClient = async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const client = await incidentService.getClient(clientId);
+    res.status(200).json(client);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener el cliente' });
+  }
+};
+
+const createClient = async (req, res) => {
+  try {
+    const clientData = req.body;
+    const result = await incidentService.createClient(clientData);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error al crear un nuevo cliente',
+      message: error.message,
+    });
+  }
+};
+
 // Controlador para crear una nueva incidencia
 const createIncident = async (req, res) => {
   try {
     const incidentData = req.body; // Suponiendo que los datos de la incidencia se envían en el cuerpo de la solicitud
+    const getClient = await incidentService.getClient(incidentData.clientId);
+    if (!getClient) throw new Error('El cliente no existe');
+    const createPuntoAtencion = await incidentService.createPuntoAtencion(
+      incidentData,
+    );
+    incidentData.id_puntoatencion = createPuntoAtencion.insertId;
     const result = await incidentService.createIncident(incidentData);
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ error: 'Error al crear una nueva incidencia' });
+    res.status(500).json({
+      error: 'Error al crear una nueva incidencia',
+      message: error.message,
+    });
   }
 };
 
@@ -134,6 +166,8 @@ module.exports = {
   getSolvedIndcidents,
   getNotSolvedIncidents,
   getIncidentsByCreationDate,
+  getClient,
+  createClient,
   createIncident,
   updateIncidentSolution,
   updateIncidentStateSolved,
