@@ -1,5 +1,5 @@
 import visitaServices from '../servicios/visita.services.js';
-import { VISITA_BINDING_KEY, NOTIF_BINDING_KEY } from '../config.js';
+import { VISITA_BINDING_KEY, NOTIF_BINDING_KEY, API_URL } from '../config.js';
 import {
   createChannel,
   publishMessage,
@@ -31,10 +31,28 @@ const errorWrapper = (err, req, res, next) => {
 
 // Admin
 
+// Function to insert incidencia into visits
+function insertIncidencia(visitas, incidencias) {
+  return visitas.map((visita) => {
+    const matchingIncidencia = incidencias.find(
+      (incidencia) => incidencia.id_incidencia === Number(visita.id_incidencia),
+    );
+    return {
+      ...visita,
+      incidencia: matchingIncidencia || null,
+    };
+  });
+}
+
 const getAllVisitas = async (req, res) => {
   try {
-    const result = await visitaServices.getAllVisitas();
-    res.json(result);
+    const visitas = await visitaServices.getAllVisitas();
+    const incidentes = await fetch(API_URL + '/incidentes').then((res) =>
+      res.json(),
+    );
+    console.log(incidentes);
+    const visitasWithIncidencia = insertIncidencia(visitas, incidentes);
+    res.json(visitasWithIncidencia);
   } catch (error) {
     console.error(error);
     res.status(500).json(error.message);
