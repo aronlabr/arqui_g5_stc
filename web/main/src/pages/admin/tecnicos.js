@@ -2,12 +2,14 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import {
   Button,
+  Col,
   Container,
   Form,
   InputGroup,
   Modal,
   OverlayTrigger,
   Popover,
+  Row,
   Stack,
   Table,
 } from 'react-bootstrap';
@@ -290,7 +292,7 @@ export async function getServerSideProps() {
   // Fetch data from external API
   try {
     const api = process.env.API_URL;
-    const res = await fetch(`${api}/tecnicos/technicians`);
+    const res = await fetch(`${api}/tecnicos/`);
     const data = await res.json();
     // Pass data to the page via props
     return { props: { data } };
@@ -344,9 +346,14 @@ export default function Page({ data }) {
 
   return (
     <Container fluid className="text-lg-center">
-      <h1>Lista de Tecnicos</h1>
-      {/* <BtnNewVisita /> */}
-      <BtnCreateTecnico />
+      <Row>
+        <h1>Lista de Tecnicos</h1>
+      </Row>
+      <Row className="my-2 ms-1">
+        <Col md="auto" className="align-self-center">
+          <BtnCreateTecnico />
+        </Col>
+      </Row>
       <TableBase data={data} columns={columns} />
     </Container>
   );

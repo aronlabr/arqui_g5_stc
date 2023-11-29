@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Button, Container, Form, Modal, Row } from 'react-bootstrap';
 const TableBase = dynamic(() => import('tables/tabledata'), { ssr: false });
 
 /*
@@ -128,10 +128,15 @@ export default function Page({ data }) {
   ];
 
   return (
-    <>
-      <div>Lista de Visitas</div>
-      <BtnNewVisita />
+    <Container fluid className="text-center">
+      <Row>
+        <h1>Lista de Visitas</h1>
+      </Row>
+      <Row md={'auto'} className="my-2 ms-2 justify-content-start">
+        <BtnNewVisita />
+      </Row>
+
       <TableBase data={data} columns={columns} />
-    </>
+    </Container>
   );
 }

@@ -1,6 +1,6 @@
 import IncidentForm from '@/components/ui/incidentForm';
 // import { clearLS } from '@/libs/userAuth';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 // {
 //   "id_incidencia": 2,
 //   "id_cliente": 2,
@@ -13,39 +13,43 @@ import IncidentForm from '@/components/ui/incidentForm';
 // }
 
 export default function Page() {
-  // const router = useRouter();
+  const router = useRouter();
   async function handleSubmit(event) {
     event.preventDefault();
     const form = event.target;
     const data = {
       id_cliente: form.id_cliente.value,
-      id_puntoatencion: form.id_puntoatencion.value,
+      puntoatencion: {
+        id_cliente: form.id_cliente.value,
+        direccion: form.direccion.value,
+        lat: form.lat.value,
+        lng: form.lng.value,
+      },
       estado: form.estado.value,
       fecha_ruta: form.fecha_ruta.value,
       descripcion_prob: form.descripcion_prob.value,
-      descripcion_sol: form.descripcion_sol.value,
+      descripcion_sol: form.descripcion_sol?.value || '',
       fc_creacion: form.fc_creacion.value,
     };
     try {
-      const api =
-        process.env.API_URL ||
-        'http://stc-g5-api.sa-east-1.elasticbeanstalk.com/api/incidentes';
+      console.log(data, pa);
+      // const api = process.env.API_URL;
 
-      const res = await fetch(`${api}/createincident`, {
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-      });
-      console.log(res);
+      // const res = await fetch(`${api}/createincident`, {
+      //   body: JSON.stringify(data),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   method: 'POST',
+      // });
+      // console.log(res);
     } catch (error) {
       console.log(error);
     }
     alert('Incidencia Registrada');
 
     // clearLS();
-    // router.push('/login');
+    router.push('/');
   }
 
   return (

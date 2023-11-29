@@ -79,7 +79,7 @@ export default function IncidentForm({
 }) {
   //position-absolute top-50 start-50 translate-middle
   return (
-    <Container className="vh-100">
+    <Container fluid>
       <Row className="d-flex h-100 justify-content-center align-content-center">
         <Card className="w-50 py-5">
           <Form onSubmit={handleSubmit} className="w-75 mx-auto">

@@ -1,4 +1,4 @@
-import { redirect, usePathname, useRouter } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 
 const users = [
   { id: 1, user: 'admin', pass: '123', point: '/dashboard' },

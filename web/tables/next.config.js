@@ -4,6 +4,9 @@ const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    API_URL: process.env.API_URL,
+  },
   webpack(config, { isServer }) {
     config.plugins.push(
       new NextFederationPlugin({
@@ -14,7 +17,6 @@ const nextConfig = {
         },
         exposes: {
           // specify exposed pages and components
-          './incidencias': './src/pages/incidlist.js',
           './tabledata': './src/components/ui/table.jsx',
         },
         extraOptions: {

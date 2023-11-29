@@ -12,9 +12,6 @@
     {
 			"path": "callcenter",
 		},
-    {
-			"path": "incidencias",
-		},
 	],
 	"settings": {
 		"editor.tabSize": 2,

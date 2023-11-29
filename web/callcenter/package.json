@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@module-federation/nextjs-mf": "^7.0.8",
+    "@react-google-maps/api": "^2.19.2",
     "bootstrap": "^5.3.2",
     "next": "13.5.6",
     "react": "^18",

@@ -1,14 +1,16 @@
 import { Button, Form, InputGroup, Stack } from 'react-bootstrap';
 
-export function Input({ name, type, phold, label, value }) {
+export function Input({ name, type, phold, label, value, asInput }) {
   return (
     <InputGroup>
-      <InputGroup.Text id={name}>{label}</InputGroup.Text>
+      <InputGroup.Text title={phold}>{label}</InputGroup.Text>
       <Form.Control
         type={type}
         placeholder={phold}
+        id={name}
         name={name}
         defaultValue={value}
+        as={asInput}
         required
       />
     </InputGroup>

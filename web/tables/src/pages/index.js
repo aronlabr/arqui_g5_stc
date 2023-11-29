@@ -1,7 +1,7 @@
 import TableBase from '@components/ui/table';
 import dayjs from 'dayjs';
 import { Button } from 'react-bootstrap';
-import data from './MOCK_DATA.json';
+import data1 from './MOCK_DATA.json';
 import Link from 'next/link';
 /*
 {
@@ -31,6 +31,14 @@ import Link from 'next/link';
 // }
 
 export default function Page() {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    fetch(process.env.API_URL + '/')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
   const columns = [
     {
       header: 'ID',

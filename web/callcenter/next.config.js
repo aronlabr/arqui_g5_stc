@@ -4,6 +4,9 @@ const deps = require('./package.json').dependencies;
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    REACT_APP_GOOGLE_MAPS_API_KEY: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  },
   webpack(config, { isServer }) {
     config.plugins.push(
       new NextFederationPlugin({
@@ -14,7 +17,7 @@ const nextConfig = {
         },
         exposes: {
           // specify exposed pages and components
-          './agregarInc': './src/pages/agregarForm.js',
+          './agregarInc': './src/pages/index.js',
           './incidentForm': './src/components/ui/incidentForm.jsx',
         },
         extraOptions: {
@@ -40,17 +43,3 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
-
-// name: 'callcenter',
-//         filename: `static/chunks/remoteEntry.js`,
-//         remotes: {
-//           main: `main@${process.env.MAIN_URL}/_next/static/chunks/remoteEntry.js`,
-//         },
-//         exposes: {
-//           './[id]': './src/pages/[id].js',
-//           './agregar': './src/pages/agregar.js',
-//         },
-//         extraOptions: {
-//           exposePages: true,
-//         },
-//         shared: {},

@@ -1,5 +1,4 @@
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
-const deps = require('./package.json').dependencies;
 
 /** @type {import('next').NextConfig} */
 
@@ -13,6 +12,10 @@ const remotes = (isServer) => {
 
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    API_URL: process.env.API_URL,
+    REACT_APP_GOOGLE_MAPS_API_KEY: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  },
   webpack(config, { isServer }) {
     config.plugins.push(
       new NextFederationPlugin({
@@ -21,18 +24,7 @@ const nextConfig = {
         remotes: remotes(isServer),
         exposes: {},
         extraOptions: {},
-        shared: {
-          bootstrap: {
-            eager: true,
-            singleton: true,
-            requiredVersion: deps.bootstrap,
-          },
-          'react-bootstrap': {
-            eager: true,
-            singleton: true,
-            requiredVersion: deps['react-bootstrap'],
-          },
-        },
+        shared: {},
       }),
     );
 

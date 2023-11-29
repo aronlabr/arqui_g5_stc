@@ -1,9 +1,6 @@
-import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
-const IncidentForm = dynamic(() => import('callc/incidentForm'), {
-  ssr: false,
-});
+import IncidentForm from '@/components/ui/incidentForm';
 
 const details = {
   client: 'a',
@@ -27,6 +24,9 @@ export default function Page() {
 
   return (
     <>
+      <Button className="my-3 ms-5" onClick={() => setisEditable(!isEditable)}>
+        {!isEditable ? 'Editar' : 'Cancelar'}
+      </Button>
       <IncidentForm
         title={'Detalles de Incidencia de Usuario'}
         isVisible={true}
@@ -35,10 +35,6 @@ export default function Page() {
         btnName={'Guardar Datos'}
         editable={isEditable}
       />
-
-      <Button className="mt-3 " onClick={() => setisEditable(!isEditable)}>
-        {!isEditable ? 'Editar' : 'Cancelar'}
-      </Button>
     </>
   );
 }
