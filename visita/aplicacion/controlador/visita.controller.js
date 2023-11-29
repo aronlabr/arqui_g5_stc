@@ -106,8 +106,12 @@ const createVisita = async (req, res) => {
 const getAllVisitasByCuadrilla = async (req, res) => {
   try {
     const cuadrilla = req.params.id;
-    const result = await visitaServices.getAllVisitasByCuadrilla(cuadrilla);
-    res.json(result);
+    const visitas = await visitaServices.getAllVisitasByCuadrilla(cuadrilla);
+    const incidentes = await fetch(API_URL + '/incidentes').then((res) =>
+      res.json(),
+    );
+    const visitasWithIncidencia = insertIncidencia(visitas, incidentes);
+    res.json(visitasWithIncidencia);
   } catch (error) {
     console.error(error);
     res.status(500).json(error.message);
