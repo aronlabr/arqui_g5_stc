@@ -12,3 +12,4 @@ g5_project.code-workspace
 **/.eslintrc.json
 **/jsconfig.json
 **/README.md
+**/.env.local

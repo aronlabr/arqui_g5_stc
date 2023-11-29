@@ -30,7 +30,11 @@ services:
       context: ./visita
     container_name: visita
     restart: unless-stopped
-    # env_file: /visita/.env.local
+    env_file: 
+      - .env
+    environment:
+      - "PORT=${PORT_1}"
+      - "API_URL=http://incidentes:8005"
     ports:
       - "8001:8001"
     depends_on:
@@ -44,7 +48,10 @@ services:
       context: ./notificacion
     container_name: notif
     restart: unless-stopped
-    # env_file: /visita/.env.local
+    env_file: 
+      - .env
+    environment:
+      - "PORT=${PORT_2}"
     ports:
       - "8002:8002"
     depends_on:
@@ -58,7 +65,10 @@ services:
       context: ./autenticacion
     container_name: auth
     restart: unless-stopped
-    # env_file: /visita/.env.local
+    env_file: 
+      - .env
+    environment:
+      - "PORT=${PORT_3}"
     ports:
       - "8003:8003"
     depends_on:
@@ -72,7 +82,10 @@ services:
       context: ./tecnicos
     container_name: tecnicos
     restart: unless-stopped
-    # env_file: /visita/.env.local
+    env_file: 
+      - .env
+    environment:
+      - "PORT=${PORT_4}"
     ports:
       - "8004:8004"
     depends_on:
@@ -87,7 +100,10 @@ services:
       context: ./GestionActividades
     container_name: incidentes
     restart: unless-stopped
-    # env_file: /visita/.env.local
+    env_file: 
+      - .env
+    environment:
+      - "PORT=${PORT_5}"
     ports:
       - "8005:8005"
     depends_on:
