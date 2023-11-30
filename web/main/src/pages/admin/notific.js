@@ -1,6 +1,7 @@
 import TableBase from '@/components/ui/table';
 import dayjs from 'dayjs';
 import { Button, Container } from 'react-bootstrap';
+import useSWR from 'swr';
 
 /*
 {
@@ -16,9 +17,9 @@ import { Button, Container } from 'react-bootstrap';
 export async function getServerSideProps() {
   // Fetch data from external API
   try {
-    const api = process.env.API_URL;
-    const res = await fetch(`${api}/visita/`);
-    const data = await res.json();
+    const data = await fetch(`${process.env.API_URL}/notif/all`).then((res) =>
+      res.json(),
+    );
     // Pass data to the page via props
     return { props: { data } };
   } catch (error) {
@@ -26,34 +27,34 @@ export async function getServerSideProps() {
     return { props: { data: [] } };
   }
 }
+const fetcher = (url) => fetch(url).then((res) => res.json());
+export default function Page() {
+  let { data, isLoading, error } = useSWR(
+    `${process.env.API_URL}/notif/all`,
+    fetcher,
+  );
 
-export default function Page({ data }) {
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
+  if (data) data = data.filter((row) => row.id_emisor !== 0);
   const columns = [
     {
-      header: 'ID',
-      accessorFn: (row) => row.id,
-    },
-    {
-      header: 'Incidencia',
-      accessorFn: (row) => row.id_incidencia,
+      header: 'Tiempo',
+      accessorFn: (row) => dayjs(row.fc_creacion).format('DD/MM/YY hh:mm:ss'),
     },
     {
       header: 'Cuadrilla',
-      accessorFn: (row) => row.id_cuadrilla,
+      accessorFn: (row) => (row.id_emisor === 0 ? 'Sistema' : row.id_emisor),
     },
     {
-      header: 'Fecha',
-      accessorFn: (row) => dayjs(row.fecha).format('DD/MM/YY'),
-      cell: ({ getValue }) =>
-        getValue() !== '' ? getValue() : <Button>📆</Button>,
+      header: 'Evento',
+      accessorFn: (row) => row.evento,
     },
     {
-      header: 'Estado',
-      accessorFn: (row) => (row.estado !== '' ? row.estado : 'Pendiente'),
-    },
-    {
-      header: 'Registro de Atención',
-      accessorFn: (row) => row.id_atencion || 'No',
+      header: 'Mensaje',
+      accessorFn: (row) => row.mensaje,
+      enableResizing: true,
+      size: 10,
     },
   ];
 

@@ -13,7 +13,8 @@ import {
   Stack,
   Table,
 } from 'react-bootstrap';
-
+import useSWR, { mutate } from 'swr';
+const fetcher = (url) => fetch(url).then((res) => res.json());
 // Crear Tecnico
 /** 
 {
@@ -45,7 +46,6 @@ import {
 ]
  */
 function TecniInput({ data }) {
-  const [available, setAvailable] = useState(data?.available);
   return (
     <>
       <Stack gap={1}>
@@ -69,6 +69,15 @@ function TecniInput({ data }) {
           />
         </InputGroup>
         <InputGroup>
+          <InputGroup.Text id="dni">🪪</InputGroup.Text>
+          <Form.Control
+            type="text"
+            name="dni"
+            placeholder="Documento Nacional de Identidad"
+            defaultValue={data?.dni}
+          />
+        </InputGroup>
+        <InputGroup>
           <InputGroup.Text id="phone">📞</InputGroup.Text>
           <Form.Control
             type="text"
@@ -84,28 +93,6 @@ function TecniInput({ data }) {
             name="address"
             placeholder="Direccion"
             defaultValue={data?.address}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputGroup.Text id="available">👷</InputGroup.Text>
-          <Form.Check
-            type="switch"
-            name="available"
-            label={available ? 'Disponible' : 'No Disponible'}
-            checked={available}
-            onChange={() => setAvailable(!available)}
-            value={available}
-            className="ms-1 align-self-center"
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputGroup.Text id="groupNumber">🚙</InputGroup.Text>
-          <Form.Control
-            type="number"
-            name="groupNumber"
-            placeholder="Numero de grupo"
-            defaultValue={data?.groupNumber ? data?.groupNumber : ''}
-            min={1}
           />
         </InputGroup>
       </Stack>
@@ -137,7 +124,9 @@ function BtnGeneticTecnico({
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
             <TecniInput data={data} />
-            {children}
+            <Stack className="mt-1" gap={1}>
+              {children}
+            </Stack>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -153,6 +142,19 @@ function BtnGeneticTecnico({
   );
 }
 
+// lambda mail
+/**
+ * {
+    "email": "pexos77697@cumzle.com",
+    "tipo": "tecnico",
+    "data": {
+      "asunto": "Gracias por contactarnos desde lamda",
+      "user": "user_1",
+      "pass": "pass_1"
+    }
+  }
+ */
+
 // Nuevo Tecnico
 async function handleNewTecnicoSubmit(event) {
   event.preventDefault();
@@ -162,22 +164,38 @@ async function handleNewTecnicoSubmit(event) {
     pass: form.pass.value,
     name: form.name.value,
     email: form.email.value,
+    dni: form.dni.value,
     phone: form.phone.value,
     address: form.address.value,
-    available: form.available.value === 'true' ? 1 : 0,
-    groupNumber: parseInt(form.groupNumber.value),
   };
   try {
     console.log(data);
-    // const api = process.env.API_URL;
-    // const res = await fetch(`${api}/tecnicos/`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
-    // console.log(res);
+    const api = process.env.API_URL;
+    const res = await fetch(`${api}/auth/register`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json());
+    const mail = {
+      email: data.email,
+      tipo: 'tecnico',
+      data: {
+        asunto: 'Gracias por contactarnos desde lamda',
+        user: data.user,
+        pass: data.pass,
+      },
+    };
+    const resMail = await fetch(`${process.env.LAMBDA_URL}/sendEmail`, {
+      method: 'POST',
+      body: mail,
+      headers: {
+        Accept: '*/*',
+      },
+    }).then((res) => res.json());
+    console.log(res, resMail);
+    await mutate(`${api}/tecnicos/`);
   } catch (error) {
     console.log(error);
   }
@@ -191,26 +209,24 @@ function BtnCreateTecnico() {
         handleSubmit={handleNewTecnicoSubmit}
         txtSubmit={'Confirmar'}
       >
-        <Stack className="mt-1" gap={1}>
-          <InputGroup>
-            <InputGroup.Text id="user">🪪</InputGroup.Text>
-            <Form.Control
-              type="text"
-              name="user"
-              placeholder="Usuario"
-              required
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputGroup.Text id="pass">🔑</InputGroup.Text>
-            <Form.Control
-              type="password"
-              name="pass"
-              placeholder="Contraseña"
-              required
-            />
-          </InputGroup>
-        </Stack>
+        <InputGroup>
+          <InputGroup.Text id="user">🪪</InputGroup.Text>
+          <Form.Control
+            type="text"
+            name="user"
+            placeholder="Usuario"
+            required
+          />
+        </InputGroup>
+        <InputGroup>
+          <InputGroup.Text id="pass">🔑</InputGroup.Text>
+          <Form.Control
+            type="password"
+            name="pass"
+            placeholder="Contraseña"
+            required
+          />
+        </InputGroup>
       </BtnGeneticTecnico>
     </>
   );
@@ -247,6 +263,7 @@ async function handleTecnicoSubmit(event) {
 }
 
 function BtnEditTecnico({ text, data }) {
+  const [available, setAvailable] = useState(data?.available);
   return (
     <>
       <BtnGeneticTecnico
@@ -254,7 +271,30 @@ function BtnEditTecnico({ text, data }) {
         handleSubmit={handleTecnicoSubmit}
         txtSubmit={'Guardar Cambios'}
         data={data}
-      />
+      >
+        <InputGroup>
+          <InputGroup.Text id="available">👷</InputGroup.Text>
+          <Form.Check
+            type="switch"
+            name="available"
+            label={available ? 'Disponible' : 'No Disponible'}
+            checked={available}
+            onChange={() => setAvailable(!available)}
+            value={available}
+            className="ms-1 align-self-center"
+          />
+        </InputGroup>
+        <InputGroup>
+          <InputGroup.Text id="groupNumber">🚙</InputGroup.Text>
+          <Form.Control
+            type="number"
+            name="groupNumber"
+            placeholder="Numero de grupo"
+            defaultValue={data?.groupNumber ? data?.groupNumber : ''}
+            min={1}
+          />
+        </InputGroup>
+      </BtnGeneticTecnico>
     </>
   );
 }
@@ -266,19 +306,20 @@ async function handlePopoverSubmit(event) {
   const form = event.target;
   const id = form.id.value;
   const data = {
-    groupNumber: form.groupNumber.value,
+    groupNumber: parseInt(form.groupNumber.value),
   };
   try {
     console.log(id, data);
-    // const api = process.env.API_URL;
-    // const res = await fetch(`${api}/tecnicos/technicians/${id}`, {
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   method: 'PUT',
-    // });
-    // console.log(res);
+    const api = process.env.API_URL;
+    const res = await fetch(`${api}/tecnicos/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json());
+    await mutate(`${api}/tecnicos/`);
+    console.log(res);
   } catch (error) {
     console.log(error);
   }
@@ -317,21 +358,13 @@ function BtnGroup({ idTec }) {
   );
 }
 
-export async function getServerSideProps() {
-  // Fetch data from external API
-  try {
-    const api = process.env.API_URL;
-    const res = await fetch(`${api}/tecnicos/`);
-    const data = await res.json();
-    // Pass data to the page via props
-    return { props: { data } };
-  } catch (error) {
-    console.log(error.message);
-    return { props: { data: [] } };
-  }
-}
-
-export default function Page({ data }) {
+export default function Page() {
+  let { data, isLoading, error } = useSWR(
+    process.env.API_URL + '/tecnicos/',
+    fetcher,
+  );
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
   const columns = [
     {
       header: 'ID',

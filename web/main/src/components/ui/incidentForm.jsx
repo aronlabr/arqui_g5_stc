@@ -89,9 +89,10 @@ function Client({ details, editable }) {
       //   correo: 'a@a',
       // };
       if (id) {
-        const clientData = await fetch(
-          process.env.API_URL + '/incidentes/client/' + id,
-        ).then((res) => res.json());
+        console.log(id);
+        const url = `${process.env.API_URL}/incidentes/client/${id}`;
+        console.log(url);
+        const clientData = await fetch(url).then((res) => res.json());
         if (clientData?.id_cliente) {
           setClient(clientData);
           setVerifiedTxt('✅');

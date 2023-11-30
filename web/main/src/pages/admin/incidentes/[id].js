@@ -4,7 +4,7 @@ import IncidentForm from '@/components/ui/incidentForm';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import FormBase, { Input } from '@/components/ui/formContent';
-
+import { request, gql } from 'graphql-request';
 const details = {
   client: 'a',
   name: 'b',
@@ -18,6 +18,51 @@ const details = {
   tecnId: 12,
   fecha: '2020-12-12',
 };
+// fetch gql
+/*
+{
+  "query": "query Query($incidenteId: Int) { incidente (id: $incidenteId) { id_incidencia nombre_full dni telefono correo descripcion_sol descripcion_prob direccion latitud longitud visita { id id_cuadrilla fecha estado lat lon imagen motivo atencion { id_atencion cl_dni cl_nombre descripcion img_antes img_desp } } }}",
+  "variables": {
+    "incidenteId": 1
+  }
+}
+*/
+
+const query = gql`
+  query Query($incidenteId: Int) {
+    incidente(id: $incidenteId) {
+      id_incidencia
+      nombre_full
+      dni
+      telefono
+      correo
+      descripcion_sol
+      descripcion_prob
+      direccion
+      latitud
+      longitud
+      visita {
+        id
+        id_cuadrilla
+        fecha
+        estado
+        lat
+        lon
+        imagen
+        motivo
+        atencion {
+          id_atencion
+          cl_dni
+          cl_nombre
+          descripcion
+          img_antes
+          img_desp
+        }
+      }
+    }
+  }
+`;
+
 const fetcher = (url) => fetch(url).then((res) => res.json());
 export default function Page() {
   const [isEditable, setisEditable] = useState(false);

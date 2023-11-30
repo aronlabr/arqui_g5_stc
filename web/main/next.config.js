@@ -15,6 +15,8 @@ const nextConfig = {
   env: {
     API_URL: process.env.API_URL,
     REACT_APP_GOOGLE_MAPS_API_KEY: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    //#stc-api-g5.sa-east-1.elasticbeanstalk.com #localhost
+    LAMBDA_URL: process.env.LAMBDA_URL,
   },
   // webpack(config, { isServer }) {
   //   config.plugins.push(

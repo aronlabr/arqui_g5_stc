@@ -6,12 +6,6 @@
 		{
 			"path": "main",
 		},
-    {
-			"path": "tables",
-		},
-    {
-			"path": "callcenter",
-		},
 	],
 	"settings": {
 		"editor.tabSize": 2,
