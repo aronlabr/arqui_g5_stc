@@ -26,6 +26,22 @@ const typeDefs = gql`
     lon: Float
   }
 
+  type Incidente {
+    id_incidencia: String
+    tipo: String
+    nombre_full: String
+    telefono: String
+    correo: String
+    dni: String
+    direccion: String
+    latitud: Float
+    longitud: Float
+    estado: Int
+    descripcion_prob: String
+    descripcion_sol: String
+    visita: Visita
+  }
+
   type ErrorInfo {
     code: String
     message: String
@@ -34,6 +50,8 @@ const typeDefs = gql`
     hello: String
     visita(id: Int): Visita
     visitas: [Visita]
+    incidente(id: Int): Incidente
+    incidentes: [Incidente]
   }
   input VisitaInput {
     id: Int

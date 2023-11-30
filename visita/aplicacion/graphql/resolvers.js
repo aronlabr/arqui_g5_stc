@@ -55,11 +55,85 @@ async function delVisitaById(_, { id }) {
   return visitas;
 }
 
+// Function to insert incidencia into visits
+function insertVisita(visitas, incidentes) {
+  return incidentes.map((incidente) => {
+    const matchingVisita = visitas.find(
+      (visita) => incidente.id_incidencia === Number(visita.id_incidencia),
+    );
+    let { descripcion_sol } = incidente;
+    return {
+      ...incidente,
+      descripcion_sol: matchingVisita
+        ? matchingVisita.atencion?.descripcion
+        : descripcion_sol,
+      visita: matchingVisita || null,
+    };
+  });
+}
+
+async function getIncidente(_, { id }) {
+  let incidente = await fetch(`${process.env.API_INCID}/${id}`).then((res) =>
+    res.json(),
+  );
+  let visitas = await visitaServ.getAllVisitas();
+  visitas = visitas.map((visita) => {
+    const { id_atencion, cl_nombre, cl_dni, descripcion, img_antes, img_desp } =
+      visita;
+    if (id_atencion) {
+      return {
+        ...visita,
+        atencion: {
+          id_atencion,
+          cl_nombre,
+          cl_dni,
+          descripcion,
+          img_antes,
+          img_desp,
+        },
+      };
+    }
+    return visita;
+  });
+  incidente = insertVisita(visitas, [incidente]);
+  return incidente[0];
+}
+
+async function getIncidentes() {
+  let visitas = await visitaServ.getAllVisitas();
+  visitas = visitas.map((visita) => {
+    const { id_atencion, cl_nombre, cl_dni, descripcion, img_antes, img_desp } =
+      visita;
+
+    if (id_atencion) {
+      return {
+        ...visita,
+        atencion: {
+          id_atencion,
+          cl_nombre,
+          cl_dni,
+          descripcion,
+          img_antes,
+          img_desp,
+        },
+      };
+    }
+    return visita;
+  });
+  let incidentes = await fetch(`${process.env.API_INCID}/`).then((res) =>
+    res.json(),
+  );
+  incidentes = insertVisita(visitas, incidentes);
+  return incidentes;
+}
+
 const resolvers = {
   Query: {
     hello: () => 'Hello World',
     visita: getVisita,
     visitas: getVisitas,
+    incidente: getIncidente,
+    incidentes: getIncidentes,
   },
   Mutation: {
     createVisita: newVisita,

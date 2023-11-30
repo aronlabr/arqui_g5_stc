@@ -1,5 +1,5 @@
 import visitaServices from '../servicios/visita.services.js';
-import { VISITA_BINDING_KEY, NOTIF_BINDING_KEY, API_URL } from '../config.js';
+import { VISITA_BINDING_KEY, NOTIF_BINDING_KEY, API_INCID } from '../config.js';
 import {
   createChannel,
   publishMessage,
@@ -47,12 +47,7 @@ function insertIncidencia(visitas, incidencias) {
 const getAllVisitas = async (req, res) => {
   try {
     const visitas = await visitaServices.getAllVisitas();
-    const incidentes = await fetch(API_URL + '/incidentes').then((res) =>
-      res.json(),
-    );
-    console.log(incidentes);
-    const visitasWithIncidencia = insertIncidencia(visitas, incidentes);
-    res.json(visitasWithIncidencia);
+    res.json(visitas);
   } catch (error) {
     console.error(error);
     res.status(500).json(error.message);
@@ -63,9 +58,9 @@ const getVisitaById = async (req, res) => {
   try {
     const { id } = req.params;
     let visita = await visitaServices.getVisitaById(id);
-    const incidente = await fetch(
-      API_URL + '/incidentes/' + result.id_incidencia,
-    ).then((res) => res.json());
+    const incidente = await fetch(API_INCID + '/' + result.id_incidencia).then(
+      (res) => res.json(),
+    );
     visita.incidencia = incidente;
     visita.tecnico = tecnico;
     res.json(visita);
@@ -111,9 +106,7 @@ const getAllVisitasByCuadrilla = async (req, res) => {
   try {
     const cuadrilla = req.params.id;
     const visitas = await visitaServices.getAllVisitasByCuadrilla(cuadrilla);
-    const incidentes = await fetch(API_URL + '/incidentes').then((res) =>
-      res.json(),
-    );
+    const incidentes = await fetch(API_INCID + '/').then((res) => res.json());
     const visitasWithIncidencia = insertIncidencia(visitas, incidentes);
     res.json(visitasWithIncidencia);
   } catch (error) {

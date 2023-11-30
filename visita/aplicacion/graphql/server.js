@@ -17,7 +17,7 @@ export default async function startServer(app) {
   });
   await server.start();
   app.use(
-    '/graphql',
+    '/gql',
     cors(),
     express.json(),
     expressMiddleware(server, {
