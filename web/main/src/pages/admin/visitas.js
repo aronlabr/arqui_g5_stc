@@ -1,8 +1,7 @@
+import TableBase from '@/components/ui/table';
 import dayjs from 'dayjs';
-import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { Button, Container, Form, Modal, Row } from 'react-bootstrap';
-const TableBase = dynamic(() => import('tables/tabledata'), { ssr: false });
 
 /*
 {

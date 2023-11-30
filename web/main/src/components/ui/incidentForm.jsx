@@ -1,5 +1,13 @@
-import { Button, Card, Container, Form, Row, Stack } from 'react-bootstrap';
-import { Input } from './formContent';
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+  Stack,
+} from 'react-bootstrap';
+import FormBase, { Input } from './formContent';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import { useState } from 'react';
 
@@ -41,7 +49,6 @@ function Maps({ children }) {
     region: 'PE',
   });
   const onLoad = (autocomplete) => {
-    console.log('autocomplete: ', autocomplete);
     setAutocomplete(autocomplete);
   };
   const onPlaceChanged = () => {
@@ -69,6 +76,78 @@ function Maps({ children }) {
   ) : null;
 }
 
+function Client({ details, editable }) {
+  const [verifiedTxt, setVerifiedTxt] = useState('');
+  const [client, setClient] = useState(null);
+  const [id, setId] = useState(null);
+  const verifiedClient = async () => {
+    try {
+      // const defaultClient = {
+      //   id_cliente: 2,
+      //   nombre_full: 'Antonio Zegarra',
+      //   telefono: '999999999',
+      //   correo: 'a@a',
+      // };
+      if (id) {
+        const clientData = await fetch(
+          process.env.API_URL + '/incidentes/client/' + id,
+        ).then((res) => res.json());
+        if (clientData?.id_cliente) {
+          setClient(clientData);
+          setVerifiedTxt('✅');
+        } else {
+          setVerifiedTxt('❌');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <>
+      <InputGroup>
+        <InputGroup.Text id={'id_cliente'}>🆔</InputGroup.Text>
+        <Form.Control
+          type={'number'}
+          placeholder={'Numero de identificacion de cliente'}
+          name={'id_cliente'}
+          defaultValue={details?.id_cliente}
+          onChange={(e) => setId(e.target.value)}
+          required
+        />
+        {editable && (
+          <Button type="button" onClick={() => verifiedClient()}>
+            Verificar
+          </Button>
+        )}
+        <span className="align-self-center">{verifiedTxt}</span>
+      </InputGroup>
+
+      <Input
+        label={'👤'}
+        name={'name'}
+        phold={'Nombre del Cliente'}
+        type={'text'}
+        value={details?.nombre_full || client?.nombre_full}
+      />
+      <Input
+        label={'📞'}
+        name={'phone'}
+        phold={'Numero de telefono de contacto'}
+        type={'text'}
+        value={details?.telefono || client?.telefono}
+      />
+      <Input
+        label={'📧'}
+        name={'mail'}
+        phold={'Direccion de correo electronico'}
+        type={'mail'}
+        value={details?.correo || client?.correo}
+      />
+    </>
+  );
+}
+
 export default function IncidentForm({
   title = null,
   handleSubmit = null,
@@ -77,110 +156,40 @@ export default function IncidentForm({
   btnName,
   editable = true,
 }) {
-  //position-absolute top-50 start-50 translate-middle
   return (
-    <Container fluid>
-      <Row className="d-flex h-100 justify-content-center align-content-center">
-        <Card className="w-50 py-5">
-          <Form onSubmit={handleSubmit} className="w-75 mx-auto">
-            <fieldset disabled={!editable}>
-              <Stack gap={3}>
-                {title && <h1 className="text-center">{title}</h1>}
-                <Input
-                  label={'🆔'}
-                  name={'id_cliente'}
-                  phold={'Numero de identificacion de cliente'}
-                  type={'number'}
-                  value={details?.id_client}
-                />
-                <input type="hidden" name={'estado'} value={0} />
-                <input type="hidden" name={'fecha_ruta'} value={''} />
-                <input
-                  type="hidden"
-                  name={'fc_creacion'}
-                  value={'2023-11-10'}
-                />
-                <Input
-                  label={'👤'}
-                  name={'name'}
-                  phold={'Nombre del Cliente'}
-                  type={'text'}
-                  value={details?.name}
-                />
-                <Input
-                  label={'📞'}
-                  name={'phone'}
-                  phold={'Numero de telefono de contacto'}
-                  type={'text'}
-                  value={details?.phone}
-                />
-                <Input
-                  label={'📧'}
-                  name={'mail'}
-                  phold={'Direccion de correo electronico'}
-                  type={'mail'}
-                  value={details?.mail}
-                />
-                <Maps>
-                  <Input
-                    label={'🏠'}
-                    name={'direccion'}
-                    phold={'Direccion de domicilio'}
-                    type={'text'}
-                    value={details?.direccion}
-                  />
-                </Maps>
-                <Input
-                  asInput={'textarea'}
-                  label={'🚨'}
-                  name={'descripcion_prob'}
-                  phold={'Descripcion general de incidencia'}
-                  type={'text'}
-                  value={details?.descripcion_prob}
-                />
-                {details?.descripcion_sol && (
-                  <Input
-                    asInput={'textarea'}
-                    label={'🔧'}
-                    name={'descripcion_sol'}
-                    phold={'Descripcion general de Solucion'}
-                    type={'text'}
-                    value={details?.descripcion_sol}
-                  />
-                )}
-                {isVisible && (
-                  <>
-                    <Input
-                      label={'ID Tecnico'}
-                      name={'tecnId'}
-                      phold={'Tecnico asignado'}
-                      type={'number'}
-                      value={details?.tecnId}
-                    />
-                    <Input
-                      label={'📆'}
-                      name={'fecha'}
-                      phold={'Fecha de Visita'}
-                      type={'date'}
-                      value={details?.fecha}
-                    />
-                    <Input
-                      label={'Prioridad'}
-                      name={'prioridad'}
-                      phold={'Nivel de Prioridad'}
-                      type={'text'}
-                      value={details?.prioridad}
-                    />
-                  </>
-                )}
-                <Button variant="secondary" type="submit">
-                  {btnName}
-                </Button>
-              </Stack>
-            </fieldset>
-          </Form>
-        </Card>
-      </Row>
-    </Container>
+    <FormBase handleSubmit={handleSubmit} editable={editable} btnText={btnName}>
+      {title && <h1 className="text-center">{title}</h1>}
+      <Client details={details} editable={editable} />
+      <input type="hidden" name={'fecha_ruta'} value={''} />
+      <input type="hidden" name={'fc_creacion'} value={'2023-11-10'} />
+
+      <Maps>
+        <Input
+          label={'🏠'}
+          name={'direccion'}
+          phold={'Direccion de domicilio'}
+          type={'text'}
+          value={details?.direccion}
+        />
+      </Maps>
+      <Input
+        asInput={'textarea'}
+        label={'🚨'}
+        name={'descripcion_prob'}
+        phold={'Descripcion general de incidencia'}
+        type={'text'}
+        value={details?.descripcion_prob}
+      />
+      {details?.descripcion_sol && (
+        <Input
+          asInput={'textarea'}
+          label={'🔧'}
+          name={'descripcion_sol'}
+          phold={'Descripcion general de Solucion'}
+          type={'text'}
+          value={details?.descripcion_sol}
+        />
+      )}
+    </FormBase>
   );
 }

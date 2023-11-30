@@ -1,11 +1,9 @@
 import dayjs from 'dayjs';
 import { Button, Container, Row } from 'react-bootstrap';
-// import data1 from './MOCK_DATA.json';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
 import useSWR from 'swr';
-const TableBase = dynamic(() => import('tables/tabledata'), { ssr: false });
+import TableBase from '@/components/ui/table';
+import { useState } from 'react';
 /*
 {
   "id_incidencia": 1,
@@ -36,50 +34,66 @@ const TableBase = dynamic(() => import('tables/tabledata'), { ssr: false });
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Page() {
-  const { data, error, isLoading } = useSWR(
-    process.env.API_URL + '/incidentes/',
+  let { data, error, isLoading } = useSWR(
+    process.env.API_URL + '/visita/',
     fetcher,
   );
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
 
+  if (data)
+    data = data.filter((item) => item.incidencia?.id_incidencia !== undefined);
   const columns = [
     {
       header: 'ID',
-      accessorFn: (row) => row.id_incidencia,
-      cell: ({ getValue }) => <Link href={`${getValue()}`}>{getValue()}</Link>,
+      accessorFn: (row) => row.incidencia?.id_incidencia,
+      cell: ({ getValue }) => (
+        <Link href={`incidentes/${getValue()}`}>{getValue()}</Link>
+      ),
     },
     {
       header: 'Cliente',
-      accessorFn: (row) => row.id_cliente,
+      accessorFn: (row) => row.incidencia?.nombre_full,
     },
     {
       header: 'Punto de Atención',
-      accessorFn: (row) => row.id_puntoatencion,
+      accessorFn: (row) => row.incidencia?.direccion,
     },
     {
       header: 'Estado',
-      accessorFn: (row) => row.estado,
+      accessorFn: (row) =>
+        row.incidencia?.estado ? 'Solucionado' : 'Pendiente',
     },
     {
       header: 'Agenda de Visita',
-      accessorFn: (row) => dayjs(row.fecha_ruta).format('DD/MM/YY'),
+      accessorFn: (row) => dayjs(row.fecha).format('DD/MM/YY'),
       cell: ({ getValue }) =>
-        getValue() !== '' ? getValue() : <Button>📆</Button>,
+        getValue() !== '' ? (
+          <Link href={'/'}>{getValue()}</Link>
+        ) : (
+          <Button>📆</Button>
+        ),
     },
     {
       header: 'Problema',
-      accessorFn: (row) => row.descripcion_prob,
+      accessorFn: (row) => row.incidencia?.descripcion_prob?.slice(0, 20),
     },
     {
       header: 'Solucion',
-      accessorFn: (row) => row.descripcion_sol,
+      accessorFn: (row) => row.incidencia?.descripcion_sol,
+      cell: ({ getValue }) => {
+        return getValue() ? (
+          getValue()?.slice(0, 20) + '...'
+        ) : (
+          <Button>📝</Button>
+        );
+      },
     },
   ];
   return (
     <Container fluid className="text-center">
+      {console.log(data)}
       <h1>Lista de Incidencias</h1>
-      <Row></Row>
       <TableBase data={data} columns={columns} />
     </Container>
   );

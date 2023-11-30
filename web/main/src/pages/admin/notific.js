@@ -1,7 +1,6 @@
+import TableBase from '@/components/ui/table';
 import dayjs from 'dayjs';
-import dynamic from 'next/dynamic';
 import { Button, Container } from 'react-bootstrap';
-const TableBase = dynamic(() => import('tables/tabledata'), { ssr: false });
 
 /*
 {
@@ -60,7 +59,6 @@ export default function Page({ data }) {
 
   return (
     <Container fluid className="text-lg-center">
-      {' '}
       <h1>Notificaciones</h1>
       <TableBase data={data} columns={columns} />
     </Container>

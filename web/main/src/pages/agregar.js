@@ -3,14 +3,14 @@ import { clearLS } from '@/libs/userAuth';
 import { useRouter } from 'next/navigation';
 import { Container } from 'react-bootstrap';
 // {
-//   "id_incidencia": 2,
-//   "id_cliente": 2,
-//   "id_puntoatencion": 2,
-//   "estado": 0,
-//   "fecha_ruta": "2023-11-15",
+//   "id_cliente": 1,
+//   "direccion": "Jr. Andahuaylas 114, Lima",
+//   "latitud": -12.0600332,
+//   "longitud": -77.0265012,
+//   "ubigeo": 130101,
+//   "fecha_ruta": "2023-11-30",
 //   "descripcion_prob": "Lorem ipsum ipsum ipsum ipsum ipsum ipsum.",
-//   "descripcion_sol": null,
-//   "fc_creacion": "2023-11-14"
+//   "descripcion_sol": null
 // }
 
 export default function Page() {
@@ -19,36 +19,31 @@ export default function Page() {
     event.preventDefault();
     const form = event.target;
     const data = {
-      id_cliente: form.id_cliente.value,
-      puntoatencion: {
-        id_cliente: form.id_cliente.value,
-        direccion: form.direccion.value,
-        lat: form.lat.value,
-        lng: form.lng.value,
-      },
-      estado: form.estado.value,
-      fecha_ruta: form.fecha_ruta.value,
+      id_cliente: parseInt(form.id_cliente.value),
+      direccion: form.direccion.value,
+      latitud: parseFloat(form.lat.value),
+      longitud: parseFloat(form.lng.value),
+      ubigeo: 130101,
+      fecha_ruta:
+        form.fecha_ruta.value || new Date().toISOString().slice(0, 10),
       descripcion_prob: form.descripcion_prob.value,
-      descripcion_sol: form.descripcion_sol?.value || '',
-      fc_creacion: form.fc_creacion.value,
+      descripcion_sol: null,
     };
     try {
-      console.log(data, pa);
-      // const api = process.env.API_URL;
-
-      // const res = await fetch(`${api}/createincident`, {
-      //   body: JSON.stringify(data),
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   method: 'POST',
-      // });
-      // console.log(res);
+      console.log(data);
+      const api = process.env.API_URL;
+      const res = await fetch(`${api}/incidentes/createincident`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => res.json());
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
-    alert('Incidencia Registrada');
-
+    alert('Incidencia Registrada Exitosamente');
     clearLS();
     router.push('/');
   }

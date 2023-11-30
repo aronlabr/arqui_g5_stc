@@ -1,4 +1,4 @@
-import dynamic from 'next/dynamic';
+import TableBase from '@/components/ui/table';
 import { useState } from 'react';
 import {
   Button,
@@ -13,17 +13,17 @@ import {
   Stack,
   Table,
 } from 'react-bootstrap';
-const TableBase = dynamic(() => import('tables/tabledata'), { ssr: false });
 
 // Crear Tecnico
 /** 
 {
-  "name": "Antoni Sarosi",
-  "email": "ant.saro@mail.com",
-  "phone": "999-559-696",
-  "address": "SMP, 158 Norte",
-  "available": true,
-  "groupNumber": 2
+  "user": "aldairam2", 
+  "pass": "1234563", 
+  "name": "Aldair Asencio Medinawd",
+  "dni": "71732723",
+  "phone": "916829111", 
+  "address": "Pasaje Ayar Manco 123", 
+  "email": "aldweq@gmail.com"
 }
 */
 
@@ -114,7 +114,13 @@ function TecniInput({ data }) {
 }
 
 // Boton Generico para crear y editar tecnico
-function BtnGeneticTecnico({ txtLabel, handleSubmit, txtSubmit, data = null }) {
+function BtnGeneticTecnico({
+  children,
+  txtLabel,
+  handleSubmit,
+  txtSubmit,
+  data = null,
+}) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -131,6 +137,7 @@ function BtnGeneticTecnico({ txtLabel, handleSubmit, txtSubmit, data = null }) {
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
             <TecniInput data={data} />
+            {children}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -150,24 +157,25 @@ function BtnGeneticTecnico({ txtLabel, handleSubmit, txtSubmit, data = null }) {
 async function handleNewTecnicoSubmit(event) {
   event.preventDefault();
   const form = event.target;
-  const id = form.id.value;
   const data = {
+    user: form.user.value,
+    pass: form.pass.value,
     name: form.name.value,
     email: form.email.value,
     phone: form.phone.value,
     address: form.address.value,
-    available: form.available.value === 'true' ? true : false,
-    groupNumber: form.groupNumber.value,
+    available: form.available.value === 'true' ? 1 : 0,
+    groupNumber: parseInt(form.groupNumber.value),
   };
   try {
-    console.log(id, data);
+    console.log(data);
     // const api = process.env.API_URL;
-    // const res = await fetch(`${api}/tecnicos/technicians`, {
+    // const res = await fetch(`${api}/tecnicos/`, {
+    //   method: 'POST',
     //   body: JSON.stringify(data),
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
-    //   method: 'POST',
     // });
     // console.log(res);
   } catch (error) {
@@ -182,7 +190,28 @@ function BtnCreateTecnico() {
         txtLabel={'Agregar Tecnico'}
         handleSubmit={handleNewTecnicoSubmit}
         txtSubmit={'Confirmar'}
-      />
+      >
+        <Stack className="mt-1" gap={1}>
+          <InputGroup>
+            <InputGroup.Text id="user">🪪</InputGroup.Text>
+            <Form.Control
+              type="text"
+              name="user"
+              placeholder="Usuario"
+              required
+            />
+          </InputGroup>
+          <InputGroup>
+            <InputGroup.Text id="pass">🔑</InputGroup.Text>
+            <Form.Control
+              type="password"
+              name="pass"
+              placeholder="Contraseña"
+              required
+            />
+          </InputGroup>
+        </Stack>
+      </BtnGeneticTecnico>
     </>
   );
 }
@@ -198,13 +227,13 @@ async function handleTecnicoSubmit(event) {
     email: form.email.value,
     phone: form.phone.value,
     address: form.address.value,
-    available: form.available.value === 'true' ? true : false,
-    groupNumber: form.groupNumber.value,
+    available: form.available.value === 'true' ? 1 : 0,
+    groupNumber: parseInt(form.groupNumber.value),
   };
   try {
     console.log(id, data);
     // const api = process.env.API_URL;
-    // const res = await fetch(`${api}/tecnicos/technicians/${id}`, {
+    // const res = await fetch(`${api}/tecnicos/${id}`, {
     //   body: JSON.stringify(data),
     //   headers: {
     //     'Content-Type': 'application/json',

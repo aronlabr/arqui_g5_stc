@@ -62,9 +62,13 @@ const getAllVisitas = async (req, res) => {
 const getVisitaById = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await visitaServices.getVisitaById(id);
-
-    res.json(result);
+    let visita = await visitaServices.getVisitaById(id);
+    const incidente = await fetch(
+      API_URL + '/incidentes/' + result.id_incidencia,
+    ).then((res) => res.json());
+    visita.incidencia = incidente;
+    visita.tecnico = tecnico;
+    res.json(visita);
   } catch (error) {
     console.error(error);
     res.status(500).json(error.message);
