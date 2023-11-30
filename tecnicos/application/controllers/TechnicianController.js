@@ -6,10 +6,10 @@ const getAll = async (req, res) => {
     res.json(technicians);
   } catch (error) {
     res.status(500).json({
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
+};
 
 const create = async (req, res) => {
   try {
@@ -17,10 +17,10 @@ const create = async (req, res) => {
     res.json(technician);
   } catch (error) {
     res.status(500).json({
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
+};
 
 const update = async (req, res) => {
   try {
@@ -28,10 +28,10 @@ const update = async (req, res) => {
     res.json(technician);
   } catch (error) {
     res.status(500).json({
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
+};
 
 const getById = async (req, res) => {
   try {
@@ -40,22 +40,45 @@ const getById = async (req, res) => {
 
     if (!technician) {
       return res.status(404).json({
-        message: 'Técnico no encontrado'
-      })
+        message: 'Técnico no encontrado',
+      });
     }
 
     res.json(technician);
   } catch (error) {
     res.status(500).json({
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
+};
+
+const deleteById = async (req, res) => {
+  try {
+    const technicianId = req.params.id;
+    const technician = await TechnicianService.getById(technicianId);
+
+    if (!technician) {
+      return res.status(404).json({
+        message: 'Técnico no encontrado',
+      });
+    }
+
+    await TechnicianService.deleteById(technicianId);
+
+    res.json({
+      message: 'Técnico eliminado',
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   getAll,
   create,
   update,
-  getById
-}
-
+  getById,
+  deleteById,
+};
