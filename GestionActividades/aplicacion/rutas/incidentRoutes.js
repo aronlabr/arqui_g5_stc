@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', incidentController.getAllIncidents);
 router.get('/:incidentId', incidentController.getIncidentsByIncidentID); //Obtener un incidente por ID de incidencia
 router.post('/client/new', incidentController.createClient); //Crear un cliente
-router.get('/client/:clientId', incidentController.getIncidentsByClientId); //Obtener un incidente por ID del cliente
+router.get('/client/:clientId', incidentController.getClient); //Obtener un incidente por ID del cliente
 router.get(
   '/puntoatencion/:puntoAtencionId',
   incidentController.getIncidentsByPuntoAtencionID,

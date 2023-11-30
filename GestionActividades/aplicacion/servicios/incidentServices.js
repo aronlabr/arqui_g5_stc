@@ -151,13 +151,13 @@ const createPuntoAtencion = async (puntoAtencionData) => {
 };
 
 const createIncident = async (incidentData) => {
-  const { id_cliente, id_puntoatencion, estado, fecha_ruta, descripcion_prob } =
+  const { id_cliente, id_puntoatencion, fecha_ruta, descripcion_prob } =
     incidentData;
   return new Promise((resolve, reject) => {
     const query = consultas.createIncident;
     conex.query(
       query,
-      [id_cliente, id_puntoatencion, estado, fecha_ruta, descripcion_prob],
+      [id_cliente, id_puntoatencion, 0, fecha_ruta, descripcion_prob],
       (error, results) => {
         if (error) {
           reject(error);

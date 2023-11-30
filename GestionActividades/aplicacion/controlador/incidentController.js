@@ -112,8 +112,8 @@ const createClient = async (req, res) => {
 // Controlador para crear una nueva incidencia
 const createIncident = async (req, res) => {
   try {
-    const incidentData = req.body; // Suponiendo que los datos de la incidencia se envían en el cuerpo de la solicitud
-    const getClient = await incidentService.getClient(incidentData.clientId);
+    const incidentData = req.body;
+    const getClient = await incidentService.getClient(incidentData.id_cliente);
     if (!getClient) throw new Error('El cliente no existe');
     const createPuntoAtencion = await incidentService.createPuntoAtencion(
       incidentData,

@@ -69,6 +69,7 @@ services:
       - .env
     environment:
       - "PORT=${PORT_3}"
+      - "TECNICO_API=http://tecnicos:8004/technicians"
     ports:
       - "8003:8003"
     depends_on:
@@ -85,7 +86,12 @@ services:
     env_file: 
       - .env
     environment:
-      - "PORT=${PORT_4}"
+      - "APP_PORT=${PORT_4}"
+      - "DB_HOST=${HOST}"
+      - "DB_USER=${USER}"
+      - "DB_PASSWORD=${PASS}"
+      - "DB_PORT=${DBPORT}"
+      - "DB_NAME=${DBNAME}"
     ports:
       - "8004:8004"
     depends_on:

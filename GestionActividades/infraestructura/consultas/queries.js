@@ -39,18 +39,15 @@ module.exports = {
     'INSERT INTO cliente (nombre, apellido, dni, telefono, correo) VALUES (?, ?, ?, ?, ?)',
 
   insertNewServicePoint:
-    'INSERT INTO PuntoAtencion (latitud, longitud, direccion, ubigeo, foto) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO punto_atencion (id_cliente, direccion, latitud, longitud, ubigeo) VALUES (?, ?, ?, ?, ?)',
 
   // Consulta para crear una nueva incidencia
   createIncident:
     'INSERT INTO incidencia (id_cliente, id_puntoatencion, estado, fecha_ruta, descripcion_prob, fc_creacion) VALUES (?, ?, ?, ?, ?, NOW())',
 
-  // Consulta para insertar un nuevo punto de atención
-  insertNewServicePoint:
-    'INSERT INTO PuntoAtencion (latitud, longitud, direccion, ubigeo, foto) VALUES (?, ?, ?, ?, ?)',
-
-    // Consulta para crear un  nuevo cliente
-    createClient: 'INSERT INTO cliente (nombre_full, dni, telefono, direccion, correo, foto) VALUES (?, ?, ?, ?, ?, ?)',
+  // Consulta para crear un  nuevo cliente
+  createClient:
+    'INSERT INTO cliente (nombre_full, dni, telefono, direccion, correo, foto) VALUES (?, ?, ?, ?, ?, ?)',
 
   // Consulta para actualizar la descripción de la solución de una incidencia específica
   updateIncidentSolution:
