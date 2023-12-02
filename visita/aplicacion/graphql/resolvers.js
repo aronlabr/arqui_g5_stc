@@ -57,7 +57,7 @@ async function delVisitaById(_, { id }) {
 
 // Function to insert incidencia into visits
 function insertVisita(visitas, incidentes) {
-  return incidentes.map((incidente) => {
+  return incidentes?.map((incidente) => {
     const matchingVisita = visitas.find(
       (visita) => incidente.id_incidencia === Number(visita.id_incidencia),
     );

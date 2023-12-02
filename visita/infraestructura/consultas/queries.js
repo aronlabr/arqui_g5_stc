@@ -1,6 +1,6 @@
 export default {
   getAllVisitas:
-    'SELECT id, id_incidencia, id_cuadrilla, fecha, estado, id_atencion FROM g5_db.visita',
+    'SELECT * FROM visita LEFT JOIN atencion ON visita.id_atencion = atencion.id_atencion',
   getAllVisitasByCuadrilla:
     'SELECT id, id_incidencia, id_cuadrilla, fecha, estado, id_atencion FROM g5_db.visita WHERE id_cuadrilla = ?',
   getAllPendientes:
