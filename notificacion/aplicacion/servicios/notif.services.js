@@ -28,7 +28,7 @@ const createNotif = async ({ emisor, destino, evento }) => {
   const pos_mensajes = {
     NEW_VISITA: 'Se creo una nueva visita',
     UPDATE_VISITA: 'Hubo cambios en el estado de esta visita',
-    CHECK_VISITA: 'Se complejo una visita con exito',
+    CHECK_VISITA: 'Se completo una visita con exito',
   };
 
   const info = await query(consultas.createNotif, [
