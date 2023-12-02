@@ -24,8 +24,7 @@ export default function Page() {
       latitud: parseFloat(form.lat.value),
       longitud: parseFloat(form.lng.value),
       ubigeo: 130101,
-      fecha_ruta:
-        form.fecha_ruta.value || new Date().toISOString().slice(0, 10),
+      fecha_ruta: null,
       descripcion_prob: form.descripcion_prob.value,
       descripcion_sol: null,
     };

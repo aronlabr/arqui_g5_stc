@@ -153,6 +153,7 @@ export default function Page() {
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
   let { incidentes } = data;
+  incidentes.sort((a, b) => b.id_incidencia - a.id_incidencia);
   const estVistia = {
     nv: 'No Visitado',
     va: 'Visitado y Atendido',
@@ -189,7 +190,7 @@ export default function Page() {
         row.visita?.fecha ? dayjs(row.visita?.fecha).format('DD/MM/YY') : '',
       cell: (info) =>
         info.getValue() !== '' ? (
-          <Link href={'/'}>{info.getValue()}</Link>
+          info.getValue()
         ) : (
           <BtnNewVisita idInc={info.row.original.id_incidencia} />
         ),
