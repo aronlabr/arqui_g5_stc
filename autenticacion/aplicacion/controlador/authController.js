@@ -17,6 +17,28 @@ exports.register = async (req, res) => {
       address,
       email,
     });
+
+    const sendMail = await fetch(`${process.env.LAMBDA_URL}/sendEmail`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        tipo: 'tecnico',
+        data: {
+          asunto: 'Gracias por contactarnos desde lamda',
+          user,
+          pass,
+        },
+      }),
+    });
+    if (sendMail.ok) {
+      const result = await sendMail.json();
+      console.log(result);
+    } else {
+      console.error('Failed to send email');
+    }
     console.log('Usuario: ' + user + ' registrado correctamente.');
     res.status(200).json(result);
   } catch (error) {
