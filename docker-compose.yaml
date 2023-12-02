@@ -15,7 +15,7 @@ services:
       - ./visita/infraestructura/esquema/Setup_Visita_DB.sql:/docker-entrypoint-initdb.d/Setup_Visita_DB.sql
       - ./notificacion/infraestructura/esquema/Setup_Notif_DB.sql:/docker-entrypoint-initdb.d/Setup_Notif_DB.sql
       - ./autenticacion/infraestructura/esquema/micro_login.sql:/docker-entrypoint-initdb.d/micro_login.sql
-      - ./GestionActividades/infraestructura/esquema/g5_gestact.sql:/docker-entrypoint-initdb.d/g5_gestact.sql
+      - ./GestionActividades/infraestructura/esquema:/docker-entrypoint-initdb.d
     networks:
       - backend
     healthcheck:
