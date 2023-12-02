@@ -1,7 +1,7 @@
 import IncidentForm from '@/components/ui/incidentForm';
 import { clearLS } from '@/libs/userAuth';
 import { useRouter } from 'next/navigation';
-import { Container } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 // {
 //   "id_cliente": 1,
 //   "direccion": "Jr. Andahuaylas 114, Lima",
@@ -49,12 +49,16 @@ export default function Page() {
 
   return (
     <Container className="vh-100">
-      <IncidentForm
-        title={'Registrar Incidencia de Usuario'}
-        isVisible={false}
-        handleSubmit={handleSubmit}
-        btnName={'Registrando inidencia'}
-      />
+      <Container fluid className="h-100 d-flex justify-content-center">
+        <Row className="h-100 w-50 justify-content-center align-content-center">
+          <IncidentForm
+            title={'Registrar Incidencia de Usuario'}
+            isVisible={false}
+            handleSubmit={handleSubmit}
+            btnName={'Registrando inidencia'}
+          />
+        </Row>
+      </Container>
     </Container>
   );
 }

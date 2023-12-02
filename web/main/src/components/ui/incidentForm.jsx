@@ -107,7 +107,12 @@ function Client({ details, editable }) {
   return (
     <>
       <InputGroup>
-        <InputGroup.Text id={'id_cliente'}>🆔</InputGroup.Text>
+        <InputGroup.Text
+          id={'id_cliente'}
+          title="Numero de identificacion de cliente"
+        >
+          🆔
+        </InputGroup.Text>
         <Form.Control
           type={'number'}
           placeholder={'Numero de identificacion de cliente'}
@@ -158,7 +163,7 @@ export default function IncidentForm({
   editable = true,
 }) {
   return (
-    <FormBase handleSubmit={handleSubmit} editable={editable} btnText={btnName}>
+    <FormBase handleSubmit={handleSubmit} editable={editable}>
       {title && <h1 className="text-center">{title}</h1>}
       <Client details={details} editable={editable} />
       <input type="hidden" name={'fecha_ruta'} value={''} />
@@ -191,6 +196,10 @@ export default function IncidentForm({
           value={details?.descripcion_sol}
         />
       )}
+
+      <Button variant="primary" type="submit">
+        {btnName}
+      </Button>
     </FormBase>
   );
 }

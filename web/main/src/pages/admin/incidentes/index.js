@@ -40,7 +40,7 @@ import { request, gql } from 'graphql-request';
 //   }
 // }
 
-const fetcher = (query) => request(`${process.env.API_URL}/visita/gql/`, query);
+const fetcher = (query) => request(`${process.env.API_URL}/visita/gql`, query);
 
 /*
 {
@@ -178,7 +178,8 @@ export default function Page() {
     },
     {
       header: 'Estado',
-      accessorFn: (row) => (row.estado ? 'Solucionado' : 'Pendiente'),
+      accessorFn: (row) =>
+        row?.visita?.estado === 'va' ? 'Solucionado' : 'Pendiente',
     },
     {
       header: 'Problema',

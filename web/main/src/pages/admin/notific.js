@@ -1,6 +1,6 @@
 import TableBase from '@/components/ui/table';
 import dayjs from 'dayjs';
-import { Button, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import useSWR from 'swr';
 
 /*
@@ -27,24 +27,17 @@ export async function getServerSideProps() {
     return { props: { data: [] } };
   }
 }
-const fetcher = (url) => fetch(url).then((res) => res.json());
-export default function Page() {
-  let { data, isLoading, error } = useSWR(
-    `${process.env.API_URL}/notif/all`,
-    fetcher,
-  );
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
-  if (data) data = data.filter((row) => row.id_emisor !== 0);
+export default function Page({ data }) {
   const columns = [
     {
       header: 'Tiempo',
       accessorFn: (row) => dayjs(row.fc_creacion).format('DD/MM/YY hh:mm:ss'),
     },
     {
-      header: 'Cuadrilla',
-      accessorFn: (row) => (row.id_emisor === 0 ? 'Sistema' : row.id_emisor),
+      header: 'Responsable',
+      accessorFn: (row) =>
+        row.id_emisor === 0 ? 'Sistema' : `Cuadrilla ${row.id_emisor}`,
     },
     {
       header: 'Evento',

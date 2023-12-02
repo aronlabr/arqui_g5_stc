@@ -1,3 +1,4 @@
+import { Input } from '@/components/ui/formContent';
 import TableBase from '@/components/ui/table';
 import { useState } from 'react';
 import {
@@ -50,51 +51,41 @@ function TecniInput({ data }) {
     <>
       <Stack gap={1}>
         <Form.Control type="hidden" name="id" defaultValue={data?.id} />
-        <InputGroup>
-          <InputGroup.Text id="name">👤</InputGroup.Text>
-          <Form.Control
-            type="text"
-            name="name"
-            placeholder="Nombre completo"
-            defaultValue={data?.name}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputGroup.Text id="email">📧</InputGroup.Text>
-          <Form.Control
-            type="email"
-            name="email"
-            placeholder="Correo electrónico"
-            defaultValue={data?.email}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputGroup.Text id="dni">🪪</InputGroup.Text>
-          <Form.Control
-            type="text"
-            name="dni"
-            placeholder="Documento Nacional de Identidad"
-            defaultValue={data?.dni}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputGroup.Text id="phone">📞</InputGroup.Text>
-          <Form.Control
-            type="text"
-            name="phone"
-            placeholder="Telefono"
-            defaultValue={data?.phone}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputGroup.Text id="address">🏠</InputGroup.Text>
-          <Form.Control
-            type="text"
-            name="address"
-            placeholder="Direccion"
-            defaultValue={data?.address}
-          />
-        </InputGroup>
+        <Input
+          name={'name'}
+          label={'👤'}
+          type={'text'}
+          value={data?.name}
+          phold={'Nombre completo'}
+        />
+        <Input
+          name={'email'}
+          label={'📧'}
+          type={'email'}
+          value={data?.email}
+          phold={'Correo electrónico'}
+        />
+        <Input
+          name={'dni'}
+          label={'🪪'}
+          type={'text'}
+          value={data?.dni}
+          phold={'Documento Nacional de Identidad'}
+        />
+        <Input
+          name={'phone'}
+          label={'📞'}
+          type={'text'}
+          value={data?.phone}
+          phold={'Numero de Telefono'}
+        />
+        <Input
+          name={'address'}
+          label={'🏠'}
+          type={'text'}
+          value={data?.address}
+          phold={'Direccion'}
+        />
       </Stack>
     </>
   );
@@ -169,15 +160,6 @@ async function handleNewTecnicoSubmit(event) {
     address: form.address.value,
   };
   try {
-    console.log(data);
-    const api = process.env.API_URL;
-    const res = await fetch(`${api}/auth/register`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((res) => res.json());
     const mail = {
       email: data.email,
       tipo: 'tecnico',
@@ -187,13 +169,32 @@ async function handleNewTecnicoSubmit(event) {
         pass: data.pass,
       },
     };
-    const resMail = await fetch(`${process.env.LAMBDA_URL}/sendEmail`, {
+    const resMail = await fetch('/api/sendEmail', {
       method: 'POST',
-      body: mail,
+      body: JSON.stringify(mail),
       headers: {
         Accept: '*/*',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (resMail.ok) {
+      const result = await resMail.json();
+      console.log(result);
+    } else {
+      console.error('Failed to send email');
+    }
+
+    console.log(data);
+    const api = process.env.API_URL;
+    const res = await fetch(`${api}/auth/register`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
       },
     }).then((res) => res.json());
+
     console.log(res, resMail);
     await mutate(`${api}/tecnicos/`);
   } catch (error) {
@@ -360,11 +361,12 @@ function BtnGroup({ idTec }) {
 
 export default function Page() {
   let { data, isLoading, error } = useSWR(
-    process.env.API_URL + '/tecnicos/',
+    `${process.env.API_URL}/tecnicos/`,
     fetcher,
   );
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
+  console.log(data);
   const columns = [
     {
       header: 'ID',

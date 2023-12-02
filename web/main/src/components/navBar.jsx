@@ -6,7 +6,7 @@ export default function NavBar() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary position-sticky">
       <Container fluid>
-        <Navbar.Brand>Usuario</Navbar.Brand>
+        <Navbar.Brand>Sistema Admin</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar" />
         <Navbar.Collapse id="navbar" className="justify-content-lg-between">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
@@ -15,9 +15,6 @@ export default function NavBar() {
             </Nav.Item>
             <Nav.Item className="pe-lg-2">
               <Link href={'/admin/incidentes'}>Incidencias</Link>
-            </Nav.Item>
-            <Nav.Item className="pe-lg-2">
-              <Link href={'/admin/incidentes/1'}>Incidencia de Prueba</Link>
             </Nav.Item>
             <Nav.Item className="pe-lg-2">
               <Link href={'/admin/visitas'}>Visitas</Link>

@@ -41,6 +41,20 @@ const data = {
 
 // [data1, data2, data3]
 
+export async function getServerSideProps() {
+  // Fetch data from external API
+  try {
+    const data = await fetch(`${process.env.API_URL}/notif/all`).then((res) =>
+      res.json(),
+    );
+    // Pass data to the page via props
+    return { props: { data } };
+  } catch (error) {
+    console.log(error.message);
+    return { props: { data: [] } };
+  }
+}
+
 export default function Page() {
   return (
     <>

@@ -89,6 +89,7 @@ export async function getServerSideProps() {
     const res = await fetch(`${api}/visita/`);
     const data = await res.json();
     // Pass data to the page via props
+    data.sort((a, b) => b.id - a.id);
     return { props: { data } };
   } catch (error) {
     console.log(error.message);
@@ -97,6 +98,11 @@ export async function getServerSideProps() {
 }
 
 export default function Page({ data }) {
+  const estVistia = {
+    nv: 'No Visitado',
+    va: 'Visitado y Atendido',
+    vna: 'Visitado y No Atendido',
+  };
   const columns = [
     {
       header: 'ID',
@@ -118,7 +124,8 @@ export default function Page({ data }) {
     },
     {
       header: 'Estado',
-      accessorFn: (row) => (row.estado !== '' ? row.estado : 'Pendiente'),
+      accessorFn: (row) =>
+        row.estado !== '' ? estVistia[row.estado] : 'Pendiente',
     },
     {
       header: 'Registro de Atención',

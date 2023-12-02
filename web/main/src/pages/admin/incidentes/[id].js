@@ -5,28 +5,6 @@ import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import FormBase, { Input } from '@/components/ui/formContent';
 import { request, gql } from 'graphql-request';
-const details = {
-  client: 'a',
-  name: 'b',
-  desc: 'c',
-  tel: 1,
-  mail: 'a@a',
-  dir: 'a',
-  pass2: 'a',
-  pass3: 'a',
-  isHidden: true,
-  tecnId: 12,
-  fecha: '2020-12-12',
-};
-// fetch gql
-/*
-{
-  "query": "query Query($incidenteId: Int) { incidente (id: $incidenteId) { id_incidencia nombre_full dni telefono correo descripcion_sol descripcion_prob direccion latitud longitud visita { id id_cuadrilla fecha estado lat lon imagen motivo atencion { id_atencion cl_dni cl_nombre descripcion img_antes img_desp } } }}",
-  "variables": {
-    "incidenteId": 1
-  }
-}
-*/
 
 const query = gql`
   query Query($incidenteId: Int) {
@@ -63,14 +41,17 @@ const query = gql`
   }
 `;
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
+const fetcher = (query, variables) =>
+  request(`${process.env.API_URL}/visita/gql`, query, variables);
+
 export default function Page() {
-  const [isEditable, setisEditable] = useState(false);
   const router = useRouter();
   let { data, isLoading, error } = useSWR(
-    process.env.API_URL + '/incidentes/' + router.query.id,
+    [query, { incidenteId: router.query.id }],
     fetcher,
   );
+  const [isEditable, setisEditable] = useState(false);
+
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
   async function handleSubmit(event) {
