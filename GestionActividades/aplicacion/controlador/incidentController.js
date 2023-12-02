@@ -1,4 +1,5 @@
 // controllers/incidentController.js
+const e = require('express');
 const incidentService = require('../servicios/incidentServices.js');
 
 const getAllIncidents = async (req, res) => {
@@ -14,12 +15,17 @@ const getAllIncidents = async (req, res) => {
 const getIncidentsByIncidentID = async (req, res) => {
   try {
     const { incidentId } = req.params;
-    const [incidents] = await incidentService.getIncidentsByIncidentId(
+    const [incident] = await incidentService.getIncidentsByIncidentId(
       incidentId,
     );
-    res.status(200).json(incidents);
+    console.log(incident);
+    if (incident) res.status(200).json(incident);
+    else throw new Error('No existe la incidencia');
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener la incidencia' });
+    res.status(500).json({
+      message: 'Error al obtener la incidencia',
+      error: error.message,
+    });
   }
 };
 

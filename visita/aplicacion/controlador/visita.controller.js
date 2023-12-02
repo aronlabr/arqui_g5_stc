@@ -34,8 +34,9 @@ const errorWrapper = (err, req, res, next) => {
 // Function to insert incidencia into visits
 function insertIncidencia(visitas, incidencias) {
   return visitas.map((visita) => {
-    const matchingIncidencia = incidencias.find(
-      (incidencia) => incidencia.id_incidencia === Number(visita.id_incidencia),
+    const matchingIncidencia = incidencias?.find(
+      (incidencia) =>
+        incidencia?.id_incidencia === Number(visita.id_incidencia),
     );
     return {
       ...visita,
@@ -58,11 +59,11 @@ const getVisitaById = async (req, res) => {
   try {
     const { id } = req.params;
     let visita = await visitaServices.getVisitaById(id);
-    const incidente = await fetch(API_INCID + '/' + result.id_incidencia).then(
+    const incidente = await fetch(API_INCID + '/' + visita.id_incidencia).then(
       (res) => res.json(),
     );
-    visita.incidencia = incidente;
-    visita.tecnico = tecnico;
+    visita.incidencia = incidente || null;
+
     res.json(visita);
   } catch (error) {
     console.error(error);
@@ -73,6 +74,13 @@ const getVisitaById = async (req, res) => {
 const createVisita = async (req, res) => {
   try {
     const { incidencia, cuadrilla, fecha } = req.body;
+    const incidenciaData = await fetch(`${API_INCID}/${incidencia}`).then(
+      (res) => {
+        if (res.ok) return res.json();
+        throw new Error(`Incidencia ${incidencia} not found`);
+      },
+    );
+
     const result = await visitaServices.createVisita({
       incidencia,
       cuadrilla,
@@ -96,7 +104,8 @@ const createVisita = async (req, res) => {
     res.json(result);
   } catch (error) {
     console.error(error);
-    res.status(301).json('Error de peticion');
+    if (res.prevent) throw new Error(error.message);
+    res.status(500).json(error.message);
   }
 };
 
@@ -106,7 +115,11 @@ const getAllVisitasByCuadrilla = async (req, res) => {
   try {
     const cuadrilla = req.params.id;
     const visitas = await visitaServices.getAllVisitasByCuadrilla(cuadrilla);
-    const incidentes = await fetch(API_INCID + '/').then((res) => res.json());
+    const incidentes = await fetch(API_INCID + '/')
+      .then((res) => res.json())
+      .catch((err) => {
+        console.error(err.message);
+      });
     const visitasWithIncidencia = insertIncidencia(visitas, incidentes);
     res.json(visitasWithIncidencia);
   } catch (error) {
@@ -148,6 +161,7 @@ const updateVisita = async (req, res) => {
     res.status(200).json(visita);
   } catch (error) {
     console.error(error);
+    if (res.prevent) throw new Error(error.message);
     res.status(400).json(error.message);
   }
 };
