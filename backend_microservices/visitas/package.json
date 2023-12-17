@@ -1,31 +1,36 @@
 {
   "name": "microservicio-visita",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "aplicacion/index.js",
   "type": "module",
   "scripts": {
     "start": "node aplicacion",
-    "dev": "nodemon main",
-    "deploy": "NODE_ENV=dock node aplicacion"
+    "dev": "nodemon --env-file=.env.local aplicacion"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.9.5",
+    "@fastify/swagger": "^8.12.1",
+    "@fastify/swagger-ui": "^2.0.1",
     "amqplib": "^0.10.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
+    "fastify": "^4.25.1",
     "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.4",
     "graphql-tag": "^2.12.6",
+    "module-alias": "^2.2.3",
     "mysql2": "^3.6.1"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.3",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "pino-pretty": "^10.3.0"
+  },
+  "_moduleAliases": {
+    "@": ".",
+    "@app": "aplicacion",
+    "@infra": "infraestructura"
   }
 }

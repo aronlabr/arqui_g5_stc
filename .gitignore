@@ -14,8 +14,9 @@ out/
 build/
 
 # local env files
+**/.env
 .env*.local
-.env*
+
 # vercel
 .vercel/
 
@@ -25,6 +26,3 @@ next-env.d.ts
 
 # workbench
 *.mwb.bak
-
-# env docker
-**/docker.env

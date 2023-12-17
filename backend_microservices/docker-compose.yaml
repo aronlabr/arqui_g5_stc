@@ -2,13 +2,13 @@ version: '3.9'
 services:
   sql-db:
     image: mysql:8.0
-    # command: --default-authentication-plugin=caching_sha2_password
     container_name: sql-db
     restart: unless-stopped
-    # env_file: ./visita/.env.local
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: "admin"
-      MYSQL_DATABASE: "g5_db"
+      MYSQL_DATABASE: ${DBNAME}
+      MYSQL_ROOT_PASSWORD: ${PASS}
     ports:
       - "3307:3306"
     volumes:
@@ -38,7 +38,7 @@ services:
       - "API_INCID=http://incidentes:8005/incidentes"
       - "API_TECN=http://tecnicos:8004/technicians"
     ports:
-      - "8001:8001"
+      - "${PORT_1}:${PORT_1}"
     depends_on:
       - "sql-db"
     networks:
@@ -55,7 +55,7 @@ services:
     environment:
       - "PORT=${PORT_2}"
     ports:
-      - "8002:8002"
+      - "${PORT_2}:${PORT_2}"
     depends_on:
       - "sql-db"
     networks:
@@ -73,7 +73,7 @@ services:
       - "PORT=${PORT_3}"
       - "TECNICO_API=http://tecnicos:8004/technicians"
     ports:
-      - "8003:8003"
+      - "${PORT_3}:${PORT_3}"
     depends_on:
       - "sql-db"
     networks:
@@ -95,7 +95,7 @@ services:
       - "DB_PORT=${DBPORT}"
       - "DB_NAME=${DBNAME}"
     ports:
-      - "8004:8004"
+      - "${PORT_4}:${PORT_4}"
     depends_on:
       sql-db:
         condition: service_healthy
@@ -113,7 +113,7 @@ services:
     environment:
       - "PORT=${PORT_5}"
     ports:
-      - "8005:8005"
+      - "${PORT_5}:${PORT_5}"
     depends_on:
       sql-db:
         condition: service_healthy

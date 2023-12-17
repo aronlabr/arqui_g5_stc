@@ -18,17 +18,6 @@ try {
   console.error('Error setting up message broker:' + error.message);
 }
 
-// Custom error handler
-const errorWrapper = (err, req, res, next) => {
-  // Log the error for debugging purposes
-  console.error(err);
-
-  // Send an error response with the appropriate status code and a custom error message
-  res
-    .status(err.status || 500)
-    .json({ error: err.message || 'Internal Server Error' });
-};
-
 // Admin
 
 // Function to insert incidencia into visits
@@ -48,7 +37,7 @@ function insertIncidencia(visitas, incidencias) {
 const getAllVisitas = async (req, res) => {
   try {
     const visitas = await visitaServices.getAllVisitas();
-    res.json(visitas);
+    res.send(visitas);
   } catch (error) {
     console.error(error);
     res.status(500).json(error.message);
@@ -59,15 +48,15 @@ const getVisitaById = async (req, res) => {
   try {
     const { id } = req.params;
     let visita = await visitaServices.getVisitaById(id);
-    const incidente = await fetch(API_INCID + '/' + visita.id_incidencia).then(
-      (res) => res.json(),
-    );
-    visita.incidencia = incidente || null;
+    // const incidente = await fetch(API_INCID + '/' + visita.id_incidencia).then(
+    //   (res) => res.json(),
+    // );
+    visita.incidencia = null;
 
-    res.json(visita);
+    res.send(visita);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error.message);
+    res.status(500).send(error.message);
   }
 };
 
@@ -101,7 +90,7 @@ const createVisita = async (req, res) => {
       message: JSON.stringify(message),
     });
     if (res.prevent) return result;
-    res.json(result);
+    res.send(result);
   } catch (error) {
     console.error(error);
     if (res.prevent) throw new Error(error.message);
@@ -121,7 +110,7 @@ const getAllVisitasByCuadrilla = async (req, res) => {
         console.error(err.message);
       });
     const visitasWithIncidencia = insertIncidencia(visitas, incidentes);
-    res.json(visitasWithIncidencia);
+    res.send(visitasWithIncidencia);
   } catch (error) {
     console.error(error);
     res.status(500).json(error.message);
@@ -158,7 +147,7 @@ const updateVisita = async (req, res) => {
     });
 
     if (res.prevent) return visita;
-    res.status(200).json(visita);
+    res.status(200).send(visita);
   } catch (error) {
     console.error(error);
     if (res.prevent) throw new Error(error.message);
@@ -185,7 +174,7 @@ const registerAtencion = async (req, res, next) => {
       message: JSON.stringify(message),
     });
 
-    res.json(result);
+    res.send(result);
   } catch (error) {
     console.error(error);
     res.status(400).json(error.message);
@@ -196,7 +185,7 @@ const deleteVisitaById = async (req, res) => {
   try {
     const { id } = req.params;
     const visita = await visitaServices.deleteVisitaById(id);
-    res.json(visita);
+    res.send(visita);
   } catch (error) {
     console.error(error);
     res.status(500).json(error.message);
@@ -206,7 +195,6 @@ const deleteVisitaById = async (req, res) => {
 // prueba
 
 export default {
-  errorWrapper,
   getAllVisitas,
   getVisitaById,
   getAllVisitasByCuadrilla,
