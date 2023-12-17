@@ -4,29 +4,32 @@
 			"path": ".",
 		},
     {
-			"path": "autenticacion",
+			"path": "../docker",
 		},
+    // {
+		// 	"path": "../autenticacion",
+		// },
     {
-			"path": "visitas",
+			"path": "../visitas",
 		},
-    {
-			"path": "notificaciones",
-		},
-    {
-			"path": "tecnicos",
-		},
-    {
-			"path": "incidentes",
-		},
-    {
-			"path": "reportes",
-		},
-    {
-			"path": "gateway",
-		},
-    {
-			"path": "lambdas",
-		},
+    // {
+		// 	"path": "../notificaciones",
+		// },
+    // {
+		// 	"path": "../tecnicos",
+		// },
+    // {
+		// 	"path": "../incidentes",
+		// },
+    // {
+		// 	"path": "../reportes",
+		// },
+    // {
+		// 	"path": "../gateway",
+		// },
+    // {
+		// 	"path": "../lambdas",
+		// },
 	],
 	"settings": {
 		"editor.tabSize": 2,

@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:20.8.1-alpine3.18
+FROM node:lts-alpine3.19
 # Set the working directory in the container
 WORKDIR /app
 # Install dependencies

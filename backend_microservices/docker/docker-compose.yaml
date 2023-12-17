@@ -1,4 +1,5 @@
 version: '3.9'
+name: stc
 services:
   sql-db:
     image: mysql:8.0
@@ -7,16 +8,16 @@ services:
     env_file:
       - .env
     environment:
-      MYSQL_DATABASE: ${DBNAME}
-      MYSQL_ROOT_PASSWORD: ${PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
     ports:
       - "3307:3306"
     volumes:
-      - ./visita/infraestructura/esquema/Setup_Visita_DB.sql:/docker-entrypoint-initdb.d/Setup_Visita_DB.sql
-      - ./notificacion/infraestructura/esquema/Setup_Notif_DB.sql:/docker-entrypoint-initdb.d/Setup_Notif_DB.sql
-      - ./autenticacion/infraestructura/esquema/micro_login.sql:/docker-entrypoint-initdb.d/micro_login.sql
-      - ./GestionActividades/infraestructura/esquema/g5_gestact.sql:/docker-entrypoint-initdb.d/g5_gestact.sql
-      - ./GestionActividades/infraestructura/esquema/g5_mock_act_data.sql:/docker-entrypoint-initdb.d/g5_mock_act_data.sql
+      - ../visitas/infraestructura/esquema/Setup_Visita_DB.sql:/docker-entrypoint-initdb.d/Setup_Visita_DB.sql
+      - ../notificaciones/infraestructura/esquema/Setup_Notif_DB.sql:/docker-entrypoint-initdb.d/Setup_Notif_DB.sql
+      - ../autenticacion/infraestructura/esquema/micro_login.sql:/docker-entrypoint-initdb.d/micro_login.sql
+      - ../incidentes/infraestructura/esquema/g5_gestact.sql:/docker-entrypoint-initdb.d/g5_gestact.sql
+      - ../incidentes/infraestructura/esquema/g5_mock_act_data.sql:/docker-entrypoint-initdb.d/g5_mock_act_data.sql
     networks:
       - backend
     healthcheck:
@@ -25,11 +26,11 @@ services:
       timeout: 30s
       retries: 3
 
-  visita:
+  visitas:
     build:
-      dockerfile: Dockerfile
-      context: ./visita
-    container_name: visita
+      context: ../visitas
+      dockerfile: ../docker/Dockerfile
+    container_name: visitas
     restart: unless-stopped
     env_file: 
       - .env
@@ -46,8 +47,8 @@ services:
 
   notif:
     build:
-      dockerfile: Dockerfile
-      context: ./notificacion
+      context: ../notificaciones
+      dockerfile: ../docker/Dockerfile
     container_name: notif
     restart: unless-stopped
     env_file: 
@@ -63,8 +64,8 @@ services:
 
   auth:
     build:
-      dockerfile: Dockerfile
-      context: ./autenticacion
+      context: ../autenticacion
+      dockerfile: ../docker/Dockerfile
     container_name: auth
     restart: unless-stopped
     env_file: 
@@ -81,19 +82,14 @@ services:
 
   tecnicos:
     build:
-      dockerfile: Dockerfile
-      context: ./tecnicos
+      context: ../tecnicos
+      dockerfile: ../docker/Dockerfile
     container_name: tecnicos
     restart: unless-stopped
     env_file: 
       - .env
     environment:
       - "APP_PORT=${PORT_4}"
-      - "DB_HOST=${HOST}"
-      - "DB_USER=${USER}"
-      - "DB_PASSWORD=${PASS}"
-      - "DB_PORT=${DBPORT}"
-      - "DB_NAME=${DBNAME}"
     ports:
       - "${PORT_4}:${PORT_4}"
     depends_on:
@@ -104,8 +100,8 @@ services:
 
   incidentes:
     build:
-      dockerfile: Dockerfile
-      context: ./GestionActividades
+      context: ../incidentes
+      dockerfile: ../docker/Dockerfile
     container_name: incidentes
     restart: unless-stopped
     env_file: 
@@ -122,12 +118,12 @@ services:
     
   gateway:
     build:
+      context: ../gateway
       dockerfile: Dockerfile
-      context: ./gateway
     container_name: gateway
     restart: unless-stopped
     depends_on:
-      - "visita"
+      - "visitas"
       - "notif"
       - "auth"
       - "tecnicos"
