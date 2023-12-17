@@ -16,7 +16,7 @@
   | GraphQL        | No      | Apollo   | No             | No         | No        | To-Do    |
   | API docs       | No      | Swagger  | No             | No         | No        | To-Do    |
 
-  - **Web** : Next.js 13, React-Bootstrap, React-Chart.js, Graphql-request
+  - **Web** : Next.js 13, React-Bootstrap, React-Chart.js, Tanstack, Google Maps, Graphql-request
 
 ### Ejecutar proyecto
 **Microservicios**
