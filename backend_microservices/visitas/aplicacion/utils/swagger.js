@@ -3,7 +3,7 @@ export const swaggerUiOpts = {
   exposeRoute: true,
 };
 
-export const swaggerOpts = {
+export let swaggerOpts = {
   swagger: {
     info: {
       title: 'Visitas API',
@@ -14,7 +14,6 @@ export const swaggerOpts = {
       url: 'https://swagger.io',
       description: 'Find more info here',
     },
-    host: '127.0.0.1',
     schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json'],

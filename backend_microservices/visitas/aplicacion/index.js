@@ -1,16 +1,12 @@
-// import express from 'express';
-// import { router } from './rutas/index.routes.js';
-// import { PORT } from './config.js';
-// import morgan from 'morgan';
-import graphServer from './graphql/server.js';
-// import cors from 'cors';
-import Fastify from 'fastify';
-import fastifyPrintRoutes from 'fastify-print-routes';
 import { PORT, NODE_ENV } from './config.js';
-import Routes from './rutas/index.routes.js';
+import Fastify from 'fastify';
+import Routes from './rutas/index';
+import graphServer from './graphql/server.js';
 import Swagger from '@fastify/swagger';
 import SwaggerUI from '@fastify/swagger-ui';
+import fastifyPrintRoutes from 'fastify-print-routes';
 import { swaggerOpts, swaggerUiOpts } from './utils/swagger.js';
+// import cors from 'cors';
 
 const envToLogger = {
   development: {
@@ -27,31 +23,18 @@ const app = Fastify({
   bodyLimit: 1048576 * 8,
 });
 
-await app.register(Swagger, swaggerOpts);
-await app.register(SwaggerUI, swaggerUiOpts);
-await app.register(fastifyPrintRoutes, { compact: true });
-// app.use(cors());
-// app.use(express.json({ limit: '20mb' }));
-// app.use(express.urlencoded({ extended: true, limit: '20mb' }));
+if (NODE_ENV === 'development') {
+  swaggerOpts.host = `localhost:${PORT}`;
+  await app.register(Swagger, swaggerOpts);
+  await app.register(SwaggerUI, swaggerUiOpts);
+  await app.register(fastifyPrintRoutes, { compact: true });
+}
 
 try {
   await graphServer(app);
 } catch (err) {
   app.log.error(err);
 }
-
-// app.use(morgan('dev'));
-// app.use('/', router);
-
-// const server = app.listen(PORT, () =>
-//   console.log(
-//     `🤖 Server iniciado en: http://localhost:${server.address().port}`,
-//   ),
-// );
-
-// app.get('/', async (request, reply) => {
-//   return { hello: 'world' }
-// })
 
 Routes.forEach((route) => {
   app.route(route);
@@ -83,4 +66,8 @@ if (NODE_ENV === 'production') {
     });
   });
 }
+
 start();
+// app.use(cors());
+// app.use(express.json({ limit: '20mb' }));
+// app.use(express.urlencoded({ extended: true, limit: '20mb' }));
