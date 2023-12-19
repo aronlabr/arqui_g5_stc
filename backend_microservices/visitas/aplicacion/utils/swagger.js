@@ -14,7 +14,7 @@ export const swaggerOpts = {
       url: 'https://swagger.io',
       description: 'Find more info here',
     },
-    host: '127.0.0.1:4001',
+    host: '127.0.0.1',
     schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json'],

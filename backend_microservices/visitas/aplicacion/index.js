@@ -2,9 +2,10 @@
 // import { router } from './rutas/index.routes.js';
 // import { PORT } from './config.js';
 // import morgan from 'morgan';
-// import graphServer from './graphql/server.js';
+import graphServer from './graphql/server.js';
 // import cors from 'cors';
 import Fastify from 'fastify';
+import fastifyPrintRoutes from 'fastify-print-routes';
 import { PORT, NODE_ENV } from './config.js';
 import Routes from './rutas/index.routes.js';
 import Swagger from '@fastify/swagger';
@@ -28,17 +29,16 @@ const app = Fastify({
 
 await app.register(Swagger, swaggerOpts);
 await app.register(SwaggerUI, swaggerUiOpts);
-
+await app.register(fastifyPrintRoutes, { compact: true });
 // app.use(cors());
 // app.use(express.json({ limit: '20mb' }));
 // app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
-// try {
-//   await graphServer(app);
-//   console.log('GraphQL launch in /graphql');
-// } catch (error) {
-//   console.error(error);
-// }
+try {
+  await graphServer(app);
+} catch (err) {
+  app.log.error(err);
+}
 
 // app.use(morgan('dev'));
 // app.use('/', router);
@@ -65,9 +65,9 @@ app.setNotFoundHandler((req, rep) => {
   });
 });
 
-const start = async () => {
+const start = () => {
   try {
-    await app.listen({ port: PORT });
+    app.listen({ port: PORT });
   } catch (err) {
     app.log.error(err);
     process.exit(1);
