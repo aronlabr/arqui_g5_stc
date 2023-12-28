@@ -30,15 +30,22 @@ const visitaSchema = {
 export default [
   {
     method: 'GET',
-    url: '/',
-    handler: async (req, rep) => {
-      return { hello: 'world' };
+    url: '/health',
+    handler: (req, rep) => {
+      rep.status(200).send('OK');
     },
   },
+  ,
   {
     method: 'GET',
-    url: '/all',
+    url: '/',
     schema: {
+      query: {
+        type: 'object',
+        properties: {
+          cuadr: { type: 'integer' },
+        },
+      },
       response: {
         '2xx': {
           type: 'array',

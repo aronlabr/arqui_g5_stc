@@ -14,25 +14,28 @@
   "dependencies": {
     "@apollo/server": "^4.9.5",
     "@as-integrations/fastify": "^2.1.1",
-    "@fastify/swagger": "^8.12.1",
-    "@fastify/swagger-ui": "^2.0.1",
+    "@fastify/cors": "^8.5.0",
     "amqplib": "^0.10.3",
     "fastify": "^4.25.1",
     "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.4",
     "graphql-tag": "^2.12.6",
-    "module-alias": "^2.2.3",
     "mysql2": "^3.6.1"
   },
   "devDependencies": {
+    "@fastify/swagger": "^8.12.2",
+    "@fastify/swagger-ui": "^2.0.1",
     "@types/amqplib": "^0.10.3",
     "fastify-print-routes": "^2.2.0",
     "nodemon": "^3.0.1",
     "pino-pretty": "^10.3.0"
   },
-  "_moduleAliases": {
-    "@": ".",
-    "@app": "aplicacion",
-    "@infra": "infraestructura"
+  "engine": {
+    "node": ">=20.0.0"
+  },
+  "imports": {
+    "#": "./*.js",
+    "#app/*": "./aplicacion/*.js",
+    "#infra/*": "./infraestructura/*.js"
   }
 }

@@ -1,12 +1,12 @@
 import { PORT, NODE_ENV } from './config.js';
 import Fastify from 'fastify';
-import Routes from './rutas/index';
+import cors from '@fastify/cors';
+import Routes from './rutas/index.routes.js';
 import graphServer from './graphql/server.js';
 import Swagger from '@fastify/swagger';
 import SwaggerUI from '@fastify/swagger-ui';
 import fastifyPrintRoutes from 'fastify-print-routes';
 import { swaggerOpts, swaggerUiOpts } from './utils/swagger.js';
-// import cors from 'cors';
 
 const envToLogger = {
   development: {
@@ -35,6 +35,11 @@ try {
 } catch (err) {
   app.log.error(err);
 }
+
+await app.register(cors, {
+  origin: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+});
 
 Routes.forEach((route) => {
   app.route(route);

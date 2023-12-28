@@ -1,10 +1,10 @@
-import visitaServices from '../servicios/visita.services.js';
+import visitaServices from '#app/servicios/visita.services';
 import { VISITA_BINDING_KEY, NOTIF_BINDING_KEY, API_INCID } from '../config.js';
 import {
   createChannel,
   publishMessage,
   subscribeMessage,
-} from '../../infraestructura/adaptador/broker.js';
+} from '#infra/adaptador/broker';
 
 let channel;
 try {
@@ -37,10 +37,11 @@ function insertIncidencia(visitas, incidencias) {
 const getAllVisitas = async (req, res) => {
   try {
     const visitas = await visitaServices.getAllVisitas();
+    req.log.info(req.query);
     res.send(visitas);
   } catch (error) {
     console.error(error);
-    res.status(500).json(error.message);
+    res.status(500).send(error.message);
   }
 };
 
